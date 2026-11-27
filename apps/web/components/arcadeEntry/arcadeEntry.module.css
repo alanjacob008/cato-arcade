@@ -1,0 +1,62 @@
+/* The entry curtain. Its last frame (.frame at full opacity) is the same dark-amber "night" frame the
+   arcade loading screen paints (components/claw/onboarding.module.css, .loading), so the handover
+   has no visible cut. */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: auto;
+  cursor: progress;
+  contain: strict;
+}
+
+.bloom {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at var(--x, 70%) var(--y, 45%), rgb(255 214 140 / .9) 0, rgb(254 169 17 / .55) 9%, rgb(211 96 30 / .26) 30%, rgb(211 96 30 / 0) 62%);
+  will-change: opacity;
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 60% 48% at 50% 46%, rgb(254 169 17 / .10), rgb(211 96 30 / .04) 52%, transparent 78%),
+    #0B0A09;
+  will-change: opacity, mask-image;
+}
+
+.curtain[data-phase="holding"] .frame,
+.curtain[data-phase="leaving"] .frame { opacity: 1; mask-image: none !important; -webkit-mask-image: none !important; }
+.curtain[data-phase="holding"] .bloom,
+.curtain[data-phase="leaving"] .bloom { opacity: 0 !important; transition: opacity .4s ease-out; }
+
+.curtain[data-phase="leaving"] { pointer-events: none; animation: curtainOut .45s cubic-bezier(.2, .8, .2, 1) forwards; }
+
+/* Warm-up before the click (ArcadeEntryCurtain.tsx): the bloom and the masked iris frame drawn at an opacity
+   that rounds to nothing on screen, so the browser's first paint of each is paid before the push-in starts.
+   The mask copies the iris's first frame, whose opening is still wider than the screen (both stops past the
+   farthest corner): that is the draw the GPU had to compile when the iris began. */
+.curtain[data-phase="warm"] { pointer-events: none; cursor: auto; }
+.curtain[data-phase="warm"] .bloom,
+.curtain[data-phase="warm"] .frame { opacity: .001; }
+.curtain[data-phase="warm"] .frame {
+  mask-image: radial-gradient(circle at 50% 50%, transparent 300vmax, #000 calc(300vmax + 36px));
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 300vmax, #000 calc(300vmax + 36px));
+}
+
+/* Reduced motion: a 200 ms crossfade in, a 200 ms crossfade out. */
+.curtain[data-reduced="true"][data-phase="closing"] .frame { animation: curtainIn .2s linear forwards; }
+.curtain[data-reduced="true"][data-phase="leaving"] { animation-duration: .2s; animation-timing-function: linear; }
+
+@keyframes curtainIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes curtainOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* The arcade's loading screen standing in once the iris has closed (ArcadeEntryCurtain.tsx). It fades in over
+   the night frame, which it matches, and leaves with the curtain. */
+.standIn { position: absolute; inset: 0; animation: curtainIn .32s cubic-bezier(.2, .8, .2, 1) both; }
+.curtain[data-reduced="true"] .standIn { animation-duration: .2s; animation-timing-function: linear; }

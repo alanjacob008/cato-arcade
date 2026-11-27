@@ -1,0 +1,102 @@
+{
+  "verifiedAt": "2026-10-26T08:48:11.593Z",
+  "cluster": "devnet",
+  "program": "EcCoQQxdqTKbwcc9tXq8ah4JVjDHbCEZyvxQMxqXct9k",
+  "upgradeAuthority": "SamyzLYUBP6hSHYJwwrUt8nV2zqY2jFSK61x68Uhbq2",
+  "artifact": {
+    "sourceCommit": "9e6b57cd9a41a2c2591cde26b427abb60a5bc8d6",
+    "bytes": 177600,
+    "sha256": "af06e7228a9e8d24cbff0a8b6064165309ead7d191f9b74e50656e2a91f446a3"
+  },
+  "deployedBinaryAndAuthorityVerified": true,
+  "deploymentSignature": "2B1PsBzZdxYnM6E5UsLttEPw8BJ3kpoyEtvCvpx399EaodHXiavBwJb8J6NnW492f1H9osyEYJpJoshQK4oCXgCq",
+  "attempts": [
+    {
+      "boxCount": 64,
+      "threshold": "0",
+      "requestSignature": "2pq6gGrMHoYi5WhQxTELfLEvS4sLrfkjShWwrQdx5zB1NLQ3A7uTY8agVGRaamFa3TPPkF61RGfD9DazkoYa8u6B",
+      "callbackSignature": "9gzW4FjfFs4y2svbWvDVPi7RD8EC8KWLrHhvCjN165SmjQr6SV1Rcrp1DGxGhJ37hreGhCQzDc7zydrEWcw4Jmo",
+      "status": "fulfilled",
+      "roll": 3631166096,
+      "success": false,
+      "requestedSlot": "515275202",
+      "fulfilledSlot": "515275204"
+    },
+    {
+      "boxCount": 64,
+      "threshold": "2147483648",
+      "requestSignature": "4MvM9r7ouj4X2hbuMtizRHV6iE7AYAfSF8ZRAajGhYiZzkgnr6fq2KEfQmPyJbihifJbqaU1mYtrh1hT9tFpa6k",
+      "callbackSignature": "5wMRt99NyMsgbfC7uMo5V4SpiNEvN99uaEjNmDFqqGxRzSzLQu9VMrrCuZF6cYLcQ1kyFaer22AuQ1mG4PJYsquf",
+      "status": "fulfilled",
+      "roll": 1452196014,
+      "success": true,
+      "requestedSlot": "515275293",
+      "fulfilledSlot": "515275296"
+    },
+    {
+      "boxCount": 64,
+      "threshold": "4294967296",
+      "requestSignature": "Ctwn97rExeBZXpNsgTXMVrtUcGmHmiSjwz16xGHL9juguAdLvWcKzw3mMp7J967c5seiHfoTPnqzrxjXcf3TpWq",
+      "callbackSignature": "5gDXnn93VVAz9opq5MwRoAZM9sinL7CxgwZ1bW7L2gSYMFXzcgAhBQwkGBNsTb5K7rB8wLmhAwaVu6EmRk9a9761",
+      "status": "fulfilled",
+      "roll": 745448672,
+      "success": true,
+      "requestedSlot": "515275400",
+      "fulfilledSlot": "515275404"
+    },
+    {
+      "boxCount": 128,
+      "threshold": "0",
+      "requestSignature": "3ePCrjc8yHsNu9jawTvRVYc9FtpvAESX6fMeKHyj3HuusMJZ5eeJeyoz5ct2nNTshYLqf19Um3uWZmumGfi5CqWW",
+      "callbackSignature": "5nhu6Jvjc3og5Ui55VBv1W2z3on7gNdWy3nBet4ttj7wYctGjDgqgVZZ5LWYnG2YVgAVJv5GRZATczQUy8RT3cR3",
+      "status": "fulfilled",
+      "roll": 1938590663,
+      "success": false,
+      "requestedSlot": "515275488",
+      "fulfilledSlot": "515275491"
+    },
+    {
+      "boxCount": 128,
+      "threshold": "2147483648",
+      "requestSignature": "39HDuoSeusEuBB1XRXesFHvuRDKQcijFPbt1bAoanWVALqkJFHs7qzfh5PduWuFSJgyx7jpkp2DXR7oXuabbAv7u",
+      "callbackSignature": "Rk497g84cnPZ6fcMd7cm8MLM4oQtYgbAKhh42cpeXzsVE6oxQ5fdG9X22B4tb6hkXCnWHtHGHCT9m7gVXV7CQjx",
+      "status": "fulfilled",
+      "roll": 3956106500,
+      "success": false,
+      "requestedSlot": "515275576",
+      "fulfilledSlot": "515275579"
+    },
+    {
+      "boxCount": 128,
+      "threshold": "4294967296",
+      "requestSignature": "2xZRZ5tN5R5mVit2V5MDdLCUd4hhV8J3VX5ak6LZ4vTLsDVpG6jr7v85G7b5w8MNSoZ4bEZvvhBq8DGbzWX4C9eZ",
+      "callbackSignature": "5Zf48NJEDTnTR6obU1rMTn8DRk9G5wpGLfBWBP9PtMyd4xcp6B1LLKsiZxsqNMLc486cCBgD5LtmUmjpFLFo8f23",
+      "status": "fulfilled",
+      "roll": 1469114103,
+      "success": true,
+      "requestedSlot": "515275681",
+      "fulfilledSlot": "515275684"
+    }
+  ],
+  "negativeChecks": {
+    "simulationsOnly": true,
+    "fulfilledAccountUnchanged": true,
+    "checks": [
+      {
+        "name": "wrong_callback_identity",
+        "rejected": true,
+        "error": "ConstraintAddress"
+      },
+      {
+        "name": "unsigned_scoped_identity",
+        "rejected": true,
+        "error": "AccountNotSigner"
+      },
+      {
+        "name": "duplicate_nonce",
+        "rejected": true
+      }
+    ]
+  },
+  "scope": "Diagnostic VRF probe only; gameplay, payments, token consumption and withdrawable balances are not integrated."
+}

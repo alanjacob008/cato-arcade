@@ -1,0 +1,22 @@
+node_modules
+
+# Local configuration is private; only the blank example belongs in Git.
+.env
+.env.*
+!.env.example
+
+/.cache
+/build
+.npmrc
+.specstory
+# SpecStory explanation file
+.specstory/.what-is-this.md
+/public/manifest.json
+
+# Local round journal, encryption key and server logs
+.runtime/
+*.log
+
+# Locally collected public market research and Python cache
+research/results/
+research/__pycache__/

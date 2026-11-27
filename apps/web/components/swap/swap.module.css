@@ -1,0 +1,83 @@
+/* Swap-specific additions on top of the shared staking layout. */
+
+/* A sub-cent price is long, so it runs smaller than the staking APY. The
+   doubled class outranks the shared layout's size rules at every breakpoint. */
+.price.price {
+  font-size: clamp(44px, 4.4vw, 76px);
+  letter-spacing: -0.035em;
+}
+
+.change {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(167, 160, 184, 0.12);
+  color: #a7a0b8;
+}
+.change[data-dir="up"] {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+}
+.change[data-dir="down"] {
+  background: rgba(237, 41, 57, 0.12);
+  color: #ff6b78;
+}
+
+.earn {
+  align-items: center;
+}
+.stakeLink {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 9999px;
+  border: 1px solid rgba(227, 122, 38, 0.55);
+  color: #f5f5f5;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 150ms ease, color 150ms ease;
+}
+.stakeLink:hover {
+  background: rgba(254, 169, 17, 0.12);
+  color: #fea911;
+}
+.stakeLink:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 3px;
+}
+
+/* The Jupiter widget brings its own padding; keep the card frame slim. */
+.card {
+  /* Minimum height for the Jupiter widget; it grows past this if needed. */
+  --swap-min-h: 520px;
+  /* Extra top room so the cat's tail doesn't cover the widget's title bar. */
+  padding: 34px 14px 14px;
+}
+@media (min-width: 1025px) and (max-height: 860px) {
+  .card {
+    --swap-min-h: 460px;
+    padding-top: 28px;
+  }
+  .note {
+    margin-top: 2px;
+  }
+}
+.note {
+  margin: 6px 10px 4px;
+  color: #a7a0b8;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+@media (max-width: 1024px) {
+  .change {
+    justify-self: center;
+  }
+}

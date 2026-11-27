@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CATO devnet VRF test</title><link rel="stylesheet" href="/style.css"><script src="/web3.js" defer></script><script src="/app.js" defer></script></head>
+<body><main>
+  <header><h1 id="page-title">CATO VRF test</h1><strong class="badge">DEVNET ONLY</strong></header>
+  <p>Deploy the verified devnet consumer and authorize its isolated VRF sessions. The separate cashier section enables devnet USDC purchases and payouts only after owner setup.</p>
+  <dl><dt>Required Phantom wallet</dt><dd id="authority">Loading…</dd><dt>Program</dt><dd id="program">Loading…</dd><dt>Binary SHA256</dt><dd id="checksum">Loading…</dd><dt>Devnet balance</dt><dd id="balance">Loading…</dd><dt>RPC</dt><dd id="rpc">Loading…</dd><dt>Local upload key</dt><dd id="uploader">Loading…</dd><dt>Durable signing</dt><dd id="nonce">Loading…</dd></dl>
+  <button id="connect" type="button">Connect Phantom</button><button id="refresh" type="button">Refresh status</button><span id="wallet" aria-live="polite">Not connected</span>
+  <section aria-labelledby="deploy-title"><h2 id="deploy-title">1. Deploy</h2>
+    <p>Upload and upgrade the verified devnet consumer. The temporary buffer's rent returns after upgrade; a larger program allocation retains its additional rent. A separate local uploader receives 0.005 devnet SOL for upload fees and manages this buffer temporarily. Unused upload funds return to your wallet. Your Phantom wallet retains program upgrade authority.</p>
+    <p>The final deployment and VRF approvals use a durable nonce, so slow signing does not expire them while that nonce remains unused.</p>
+    <progress id="upload" max="100" value="0" aria-label="Verified binary chunks uploaded"></progress><p id="progress-text"></p>
+    <button id="deploy" type="button" disabled>Upload &amp; upgrade</button>
+  </section>
+  <section id="test-section" aria-labelledby="test-title"><h2 id="test-title">2. Verify VRF</h2>
+    <p>Six requests: 64 and 128 diagnostic boxes at 0%, 50% and 100%. Each requires a Phantom signature and spends devnet request rent and oracle/network fees.</p>
+    <button id="test" type="button" disabled>Run verification suite</button>
+    <ol id="results"></ol><p id="checks"></p>
+  </section>
+  <section aria-labelledby="sponsor-title"><h2 id="sponsor-title">3. CATO-sponsored gameplay</h2>
+    <p id="sponsor-description">Authorize a separate server signer for 500 devnet requests over 6 hours, topping its balance up to 0.05 devnet SOL. CATO covers the fees. No player SOL surcharge, treasury access, program upgrade authority or withdrawals are granted.</p>
+    <p id="sponsor-status">Loading sponsor status…</p>
+    <button id="sponsor" disabled>Authorize &amp; fund sponsor</button><button id="revoke-sponsor" disabled>Revoke sponsor</button>
+  </section>
+  <section id="pool-section" aria-labelledby="pool-title" hidden>
+    <h2 id="pool-title">4. Concurrent sessions &amp; automatic renewal</h2>
+    <p id="pool-summary" role="status"></p>
+    <p>Eight sessions are configured. Each requires owner authorization and delegation before use. Existing four-session signers and pending attempts are preserved. Each session renews grants of 500 on its next request, up to 1,000 requests per UTC day and 7,000 requests total under the initial seven-day policy. All eight initialized sessions initially allow up to 8,000 per day and 56,000 total; the status below shows actual active capacity. Each separate signer is funded up to 0.005 devnet SOL with your approval. Automatic SOL top-ups remain disabled; the separate four-recipient funding contract needs an update before use with eight sessions.</p>
+    <div id="pool-lanes"></div>
+  </section>
+  <section id="cashier-section" aria-labelledby="cashier-title" hidden>
+    <h2 id="cashier-title">4. Devnet USDC cashier</h2>
+    <p id="cashier-status" role="status"></p>
+    <p>Solana L1 vault with a separate settlement signer, up to 1,000 devnet USDC per claim and 10,000 per UTC day. Initial signer funding is capped at 0.05 devnet SOL. The owner funds the vault separately with devnet USDC; VRF relayers have no payout access.</p>
+    <button id="cashier" disabled>Initialize devnet cashier</button>
+  </section>
+  <section aria-labelledby="topup-title"><h2 id="topup-title">Automatic SOL top-ups</h2><p id="topup-status" role="status">Disabled until the separate sponsorship vault is configured.</p></section>
+  <p id="status" role="status" aria-live="polite">Connecting to local test server…</p><p id="error" role="alert"></p>
+  <pre id="signing-diagnostic" aria-label="Signing failure diagnostic" hidden></pre>
+  <p><a id="play-link" hidden>Open claw timing test</a></p>
+</main></body></html>

@@ -1,0 +1,4 @@
+.ticker {
+  color: var(--ticker-color, #fea911);
+  white-space: nowrap;
+}

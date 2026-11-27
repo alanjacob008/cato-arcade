@@ -1,0 +1,18 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import ts from "typescript";
+const source = await readFile(new URL("../components/claw/playerStats.ts", import.meta.url), "utf8");
+const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
+const { EMPTY_TOTALS, recordCompletedPlay, restorePlayerTotals, serializePlayerTotals, playerTotalsKey } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
+const miss = recordCompletedPlay(EMPTY_TOTALS, 0, 200);
+assert.equal(miss.prizeCents - miss.entryCents, -200, "A miss includes the locked play cost");
+const win = recordCompletedPlay(miss, 500, 400);
+assert.equal(win.prizeCents - win.entryCents, -100, "USDC prizes minus locked USDC play costs");
+assert.deepEqual(restorePlayerTotals(serializePlayerTotals(win)), win, "Totals survive reload independently of the five-item recent list");
+let many = win;
+for (let i = 0; i < 10; i++) many = recordCompletedPlay(many, 50, 200);
+assert.equal(many.prizeCents - many.entryCents, -1600, "Totals include every play, not only visible recent plays");
+assert.notEqual(playerTotalsKey("alice"), playerTotalsKey("bob"));
+for (const raw of [null, "invalid", "{}", '{"version":2,"prizeCents":10,"entryCents":20}', '{"version":1,"prizeCents":-1,"entryCents":0}']) assert.deepEqual(restorePlayerTotals(raw), EMPTY_TOTALS);
+for (const invalid of [NaN, -1, .5, Number.MAX_SAFE_INTEGER + 1]) assert.throws(() => recordCompletedPlay(win, invalid, 150));
+console.log("PASS: net winnings, locked USDC costs, losses, aggregate history, storage roundtrip, player isolation and invalid storage.");

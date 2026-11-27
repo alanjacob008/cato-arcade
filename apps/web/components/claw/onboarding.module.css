@@ -1,0 +1,74 @@
+@font-face {
+  font-family: "CATO Onboarding Pixel";
+  src: url("/claw/fonts/pixel-sans-serif.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Arcade loading (entry workstream): a neon marquee whose letters power on with the real progress.
+   Its night frame matches the entry curtain's last frame (components/arcadeEntry/arcadeEntry.module.css). */
+.loading {
+  --night: #0B0A09; --deck: #1A1714; --deck-edge: #2B2621; --amber: #FEA911; --ember: #D3601E; --cream: #FFEDCD; --muted: #A8A096;
+  position: fixed; inset: 0; z-index: 90; box-sizing: border-box; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+  padding: 28px 20px calc(84px + env(safe-area-inset-bottom)); color: var(--cream); text-align: center;
+  background: radial-gradient(ellipse 60% 48% at 50% 46%, rgb(254 169 17 / .10), rgb(211 96 30 / .04) 52%, transparent 78%), #0B0A09;
+}
+.marquee { position: relative; display: flex; flex-direction: column; align-items: center; }
+.loadingLogo { position: relative; z-index: 2; width: clamp(76px, 8vw, 104px); height: auto; margin-bottom: -18px; object-fit: contain; filter: drop-shadow(0 6px 14px rgb(0 0 0 / .6)); animation: catPeek .9s cubic-bezier(.22, 1, .36, 1) both; }
+.marqueeBox {
+  position: relative; padding: 32px clamp(18px, 3.4vw, 42px) 22px; border-radius: 18px;
+  background: linear-gradient(180deg, #221d18, #15120f); border: 1px solid var(--deck-edge);
+  box-shadow: inset 0 1px 0 rgb(255 237 205 / .06), inset 0 -10px 30px rgb(0 0 0 / .45), 0 30px 80px -30px rgb(0 0 0 / .9), 0 0 70px -24px rgb(254 169 17 / .35);
+}
+.bulbs { position: absolute; top: 12px; left: 26px; right: 26px; display: flex; justify-content: space-between; }
+.bulbs > span { width: 7px; height: 7px; border-radius: 50%; background: #5a3d14; box-shadow: 0 0 0 1px rgb(0 0 0 / .4); animation: chase 1.2s linear infinite; animation-delay: calc(var(--b) * 1.2s / 7); }
+.sign { display: flex; align-items: baseline; gap: .04em; font: 400 clamp(30px, 6.2vw, 76px)/1 "CATO Onboarding Pixel", monospace; letter-spacing: .04em; white-space: nowrap; }
+.signGap { width: .42em; }
+/* A dead tube until its share of the progress arrives, then a quick flicker and a steady glow. */
+.signLetter { color: #342c23; text-shadow: 0 1px 0 rgb(255 237 205 / .05); }
+.signLetter[data-lit] {
+  color: #FFE2A8;
+  text-shadow: 0 0 2px #fff3d6, 0 0 8px rgb(254 169 17 / .95), 0 0 22px rgb(254 169 17 / .7), 0 0 44px rgb(211 96 30 / .55);
+  animation: powerOn .46s steps(1, end) both;
+}
+.loading p.loadingStatus { margin: 0; color: var(--amber); font: 400 13px/1.4 "CATO Onboarding Pixel", monospace; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.loadingProgress { width: min(360px, 100%); }
+.loadingTrack { position: relative; height: 4px; overflow: hidden; border-radius: 999px; background: #241e18; box-shadow: inset 0 0 0 1px rgb(255 237 205 / .05); }
+.loadingTrack > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--ember), var(--amber) 70%, #FFD98A); box-shadow: 0 0 12px rgb(254 169 17 / .7); transition: width .25s ease-out; }
+.loadingCaption { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; color: var(--muted); font: 400 12px/1.4 var(--font-cato-body, var(--font-brand)), system-ui, sans-serif; text-align: left; }
+.loadingCaption strong { color: var(--cream); font-weight: 600; font-variant-numeric: tabular-nums; }
+.loadingError { color: var(--muted); font: 400 13px/1.5 var(--font-cato-body, var(--font-brand)), system-ui, sans-serif; }
+.loading[data-failed] p.loadingStatus { color: #ff8a8a; }
+.loading[data-failed] .bulbs > span { animation: none; }
+.loading p.loadingCredit, .loading p.loadingCredit span { color: var(--muted); }
+.loadingCredit { position: absolute; left: 0; right: 0; bottom: calc(26px + env(safe-area-inset-bottom)); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 9px; margin: 0; padding: 0 20px; color: var(--muted); font: 400 12px/1 var(--font-cato-body, var(--font-brand)), system-ui, sans-serif; letter-spacing: .02em; }
+.creditLogo { width: auto; height: 15px; opacity: .92; }
+.loading[data-compact="true"] { position: relative; inset: auto; z-index: auto; width: 100%; height: 100%; min-height: 0; gap: 20px; padding-bottom: 64px; }
+.loading[data-compact="true"] .sign { font-size: clamp(24px, 4.4vw, 52px); }
+.loading[data-compact="true"] .loadingLogo { width: clamp(60px, 6vw, 84px); margin-bottom: -14px; }
+.loading[data-compact="true"] .loadingCredit { bottom: 20px; }
+.tutorial { width: min(620px, calc(100vw - 32px)); }
+.tutorial h2 { font-size: clamp(19px, 3vw, 25px); line-height: 1.3; }
+.tutorialSection { margin-top: 25px; }
+.tutorialSection + .tutorialSection { border-top: 1px solid #ffedcd1a; padding-top: 20px; }
+.tutorialSection h3 { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #fff0d8; }
+.tutorialSection ol { margin: 0; padding-left: 24px; display: grid; gap: 12px; color: #cfc3ae; line-height: 1.65; }
+.tutorialSection li { padding-left: 5px; }
+.tutorialSection li::marker { color: #FEA911; font-weight: 700; }
+.tutorialSection strong { color: #FFEDCD; font-weight: 600; }
+.tutorialDone { margin-top: 20px; width: 100%; font-size: 17px !important; }
+@keyframes chase { 0%, 100% { background: #5a3d14; box-shadow: 0 0 0 1px rgb(0 0 0 / .4); } 14% { background: #FFD27A; box-shadow: 0 0 8px rgb(254 169 17 / .95), 0 0 16px rgb(254 169 17 / .5); } 40% { background: #8a5b17; box-shadow: 0 0 0 1px rgb(0 0 0 / .4); } }
+@keyframes powerOn { 0% { opacity: .25; } 18% { opacity: 1; } 30% { opacity: .35; } 46% { opacity: 1; } 58% { opacity: .55; } 72%, 100% { opacity: 1; } }
+@keyframes catPeek { from { transform: translateY(18px); opacity: 0; } }
+/* A screen that takes over from another carries on: no second cat peek, letters already lit stay steady. */
+.loading[data-continued] .loadingLogo, .signLetter[data-steady] { animation: none; }
+/* The still copy of a full screen that left (ArcadeLoading.tsx): it fades out over the arcade, nothing inside it moves. */
+.loading[data-exit] { animation: loadingOut .56s cubic-bezier(.2, .8, .2, 1) forwards; }
+.loading[data-complete] .loadingLogo, .loading[data-complete] .signLetter { animation: none; }
+.loading[data-exit] * { animation: none !important; transition: none !important; }
+@keyframes loadingOut { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .loadingLogo, .signLetter[data-lit] { animation: none; } .bulbs > span { animation: none; background: #b07a22; } .loadingTrack > span { transition: none; } }
+@media (max-width: 479px) { .marqueeBox { padding: 28px 16px 18px; } .bulbs { left: 18px; right: 18px; } .loadingCredit { font-size: 11px; } .creditLogo { height: 13px; } }
+@media (max-width: 479px) { .tutorialSection { margin-top: 20px; }.tutorialSection ol { font-size: 12px; gap: 10px; }.tutorialDone { min-height: 48px; font-size: 14px !important; } }

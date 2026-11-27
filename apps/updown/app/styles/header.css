@@ -1,0 +1,371 @@
+/*
+ * Header: a copy of the main Cato site header (apps/web/components/Header.tsx,
+ * apps/web/app/globals.css). Values are taken 1:1 from its inline styles;
+ * keep them in sync when the main site changes.
+ */
+
+/* Scaffold slot that hosts the header (desktop Box / mobile <header>). */
+.cato-scaffold {
+  padding-top: 0 !important; /* mobile scaffold adds oui-pt-2 above the bar */
+  background-color: transparent !important; /* keep the page's body colour */
+}
+.cato-header-shell {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: transparent !important; /* drop oui-bg-base-9 / base-10 */
+}
+
+.cato-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(13, 13, 15, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #1e1e22;
+  font-family: Rubik, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: normal;
+  color: #f5f5f5;
+}
+
+.cato-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #f5f5f5;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: "Bricolage Grotesque", Rubik, sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.cato-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.cato-header-link {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 40px; /* one row height with the chain + wallet controls */
+  color: #f5f5f5;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: transparent;
+  white-space: nowrap;
+}
+.cato-header-link:focus-visible,
+.cato-header-brand:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: -2px;
+}
+.cato-header-link[data-active] {
+  color: #fea911;
+  background: rgba(255, 138, 0, 0.12);
+}
+
+.cato-header-socials {
+  position: relative;
+}
+.cato-header-socials-button {
+  border: 1px solid #2a2a30;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: inherit;
+}
+.cato-header-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+.cato-header-menu {
+  position: fixed;
+  min-width: 190px;
+  z-index: 41;
+  background: #16161a;
+  border: 1px solid #2a2a30;
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.cato-header-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #f5f5f5;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+}
+.cato-header-menu a:hover {
+  background: #222;
+}
+.cato-header-menu-icon {
+  width: 18px;
+  text-align: center;
+  color: #fea911;
+}
+.cato-header-menu-arrow {
+  margin-left: auto;
+  color: #a7a0b8;
+}
+
+/* SDK extras: chain selector + wallet button. One even row: every control
+   in the cluster is 40px tall. */
+.cato-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+/* Chain selector trigger (desktop dropdown trigger / mobile sheet button),
+   outlined like the "Socials" button. */
+.cato-header-actions > [aria-haspopup="menu"],
+.cato-header-actions > button:not(.oui-button) > div {
+  width: 44px;
+  height: 40px;
+  border: 1px solid #2a2a30;
+  border-radius: 8px;
+  background: transparent;
+  padding: 0;
+  transition: border-color 0.15s;
+}
+.cato-header-actions > [aria-haspopup="menu"]:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 2px;
+}
+.cato-header-actions > [aria-haspopup="menu"]:hover,
+.cato-header-actions > [aria-haspopup="menu"][data-state="open"],
+.cato-header-actions > button:not(.oui-button):hover > div {
+  border-color: #3a3a42;
+}
+.cato-header-actions > [aria-haspopup="menu"] > svg,
+.cato-header-actions > button:not(.oui-button) > div > div {
+  display: none; /* SDK gradient corner tab; the outline already reads as a control */
+}
+/* SDK account button (connect / create account / enable trading / wrong
+   network): the brand's cream primary CTA (design.md). */
+.cato-header-actions .oui-button {
+  height: 40px;
+  min-width: 150px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+}
+.cato-header-actions .wallet-connect-button:not(:disabled) {
+  background: #ffedcd;
+  color: #1c0d00;
+}
+.cato-header-actions .wallet-connect-button:not(:disabled):hover {
+  background: #fff5e3;
+}
+
+/* Connected wallet: our own trigger (CatoHeader WalletControl), same box as
+   the Connect button. */
+.cato-wallet {
+  position: relative;
+}
+.cato-wallet-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  min-width: 150px;
+  padding: 0 12px 0 14px;
+  border: 1px solid #ffedcd;
+  border-radius: 8px;
+  background: #ffedcd;
+  color: #1c0d00;
+  font-family: Rubik, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.cato-wallet-button:hover {
+  background: #fff5e3;
+}
+.cato-wallet-button[aria-expanded="true"] {
+  border-color: #fea911;
+  box-shadow: 0 0 0 3px rgba(254, 169, 17, 0.22);
+}
+.cato-wallet-button:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 2px;
+}
+.cato-wallet-icon {
+  flex-shrink: 0;
+  color: #a35f00;
+}
+.cato-wallet-address {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.cato-wallet-chevron {
+  flex-shrink: 0;
+  margin-left: 2px;
+  opacity: 0.6;
+  transition: transform 0.15s;
+}
+.cato-wallet-button[aria-expanded="true"] .cato-wallet-chevron {
+  transform: rotate(180deg);
+}
+.cato-wallet-menu-address {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #2a2a30;
+  color: #fea911;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.cato-wallet-menu-address span {
+  color: #f5f5f5;
+}
+.cato-wallet-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #f5f5f5;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+}
+.cato-wallet-menu button:hover {
+  background: #222;
+}
+.cato-wallet-menu .cato-header-menu-icon {
+  display: inline-flex;
+  justify-content: center;
+}
+.cato-wallet-menu .cato-wallet-disconnect,
+.cato-wallet-menu .cato-wallet-disconnect .cato-header-menu-icon {
+  color: #f58b96;
+}
+
+/* Two rows (brand + controls, then nav) below 900px: the single row needs
+   ~855px, so anything narrower would overflow the page horizontally. */
+@media (max-width: 899px) {
+  .cato-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand actions"
+      "nav nav";
+    row-gap: 6px;
+  }
+  .cato-header-brand {
+    grid-area: brand;
+    min-width: 0;
+  }
+  .cato-header-actions {
+    grid-area: actions;
+    margin-left: 8px;
+  }
+  .cato-header-nav {
+    grid-area: nav;
+    min-width: 0;
+    margin: 0 -20px 0 -10px; /* align link text with the wordmark, bleed right */
+    padding-right: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cato-header-nav::-webkit-scrollbar {
+    display: none;
+  }
+  /* Overflow affordance: fade whichever edge of the nav row still has links
+     behind it (data attributes set by CatoHeader's useNavOverflow). Drawn on
+     the header rather than as a mask on the nav, so the Socials dropdown
+     (a fixed-position child of the nav) is never masked out. */
+  .cato-header {
+    position: relative;
+  }
+  .cato-header[data-nav-overflow-start]::before,
+  .cato-header[data-nav-overflow-end]::after {
+    content: "";
+    position: absolute;
+    bottom: 12px; /* header bottom padding: covers the nav row only */
+    width: 44px;
+    height: 40px;
+    pointer-events: none;
+  }
+  .cato-header[data-nav-overflow-start]::before {
+    left: 0;
+    background: linear-gradient(to left, rgba(13, 13, 15, 0), #0d0d0f 85%);
+  }
+  .cato-header[data-nav-overflow-end]::after {
+    right: 0;
+    background: linear-gradient(to right, rgba(13, 13, 15, 0), #0d0d0f 85%);
+  }
+}
+
+/* Main site: "Header wordmark: a little smaller on phones". */
+@media (max-width: 520px) {
+  .cato-header-brand {
+    font-size: 15px;
+    padding-left: 0;
+  }
+  .cato-header {
+    padding: 12px 16px;
+  }
+  /* Tight enough that all five items fit at 390px; narrower phones scroll
+     the row with the edge fade as the affordance. */
+  .cato-header-nav {
+    gap: 0;
+    margin: 0 -16px 0 -7px; /* link text lines up with the wordmark */
+    padding-right: 4px;
+  }
+  .cato-header-link {
+    font-size: 14px;
+    padding: 0 7px;
+  }
+  /* Phones: let the wallet controls shrink to their content. */
+  .cato-header-actions .oui-button,
+  .cato-wallet-button {
+    min-width: 0;
+  }
+  .cato-wallet-button {
+    padding: 0 10px;
+    gap: 6px;
+  }
+}
+
+/* The SDK bottom nav is not rendered (Layout.tsx: no bottomNavProps; the
+   header's nav row covers Play / Portfolio), so drop the 80px that
+   updown.css reserves under the page for it on phones. */
+@media (max-width: 760px) {
+  .cato-scaffold .nl-shell {
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+}

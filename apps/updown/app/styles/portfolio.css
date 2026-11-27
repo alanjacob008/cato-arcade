@@ -1,0 +1,142 @@
+/* Portfolio pages (Rounds / Balances / History). Scoped to nl-portfolio-*,
+   nl-stat-*, nl-balances-* and nl-ledger-* so nothing leaks into the game
+   screen. The Rounds table lives in rounds.css; the Balances and History
+   tables below copy its table metrics on purpose. */
+
+.nl-portfolio {
+  /* Anything from the Orderly SDK rendered inside the portfolio (none of the
+     tabs embed SDK pages any more) picks up our surface tones. */
+  --oui-color-base-10: #111211; /* page */
+  --oui-color-base-9: #171815;  /* card */
+  --oui-color-base-8: #1b1c18;  /* inner */
+  --oui-color-base-7: #22231f;  /* raised */
+  --oui-color-base-6: #2a2b26;
+  --oui-color-base-5: #34352e;
+  --oui-color-line: #ffedcd;
+  --oui-color-primary: #fea911;
+  --oui-color-primary-light: #ffbd44;
+  --oui-color-trading-profit: #81dab2;
+  --oui-color-trading-loss: #f58b96;
+}
+
+/* Tab nav: a little more air; updown.css owns the base rule. */
+.nl-portfolio .nl-portfolio-tabs a { font-weight: 500; letter-spacing: .1px; }
+.nl-portfolio .nl-portfolio-tabs a:hover { color: #ffedcd; }
+
+/* Heading: the same box as the game hero (.nl-game-heading in game.css), so the
+   balance bar sits at the same y on "/" and /portfolio and nothing jumps when
+   switching. The eyebrow is lifted out of flow into the shell's top padding. */
+.nl-portfolio .nl-portfolio-heading { align-items: flex-end; min-height: 76px; }
+.nl-portfolio-heading > div { position: relative; }
+.nl-portfolio-heading .nl-eyebrow { position: absolute; left: 0; bottom: 100%; margin: 0 0 4px; line-height: 15px; white-space: nowrap; }
+
+/* ------------------------------------------------------------------------
+ * Stat tiles + caption shared by Rounds and Balances, so the tiles keep one
+ * size when switching tabs.
+ * ---------------------------------------------------------------------- */
+.nl-stat-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.nl-stat-tile { background: #1b1c18; border: 1px solid #ffedcd14; border-radius: 12px; padding: 22px 24px; min-width: 0; }
+.nl-stat-tile .nl-label { margin-bottom: 10px; }
+.nl-stat-tile strong { display: block; font-family: 'Bricolage Grotesque', Rubik, sans-serif; font-size: 29px; font-weight: 600; letter-spacing: -.6px; line-height: 1.1; color: #ffedcd; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nl-stat-tile strong small { font-family: Rubik, sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0; color: #969088; margin-left: 8px; vertical-align: 2px; }
+.nl-stat-tile > small { display: block; margin-top: 9px; color: #969088; font-size: 11px; line-height: 1.5; }
+.nl-stat-caption { color: #969088; font-size: 12px; line-height: 1.8; margin: 18px 0; }
+
+/* ------------------------------------------------------------------------
+ * Shared table look for Balances + History: same metrics as .nl-rounds-table
+ * (single-line cells, 14px/16px padding, 10px muted headers, hairline rows).
+ * ---------------------------------------------------------------------- */
+.nl-balances-table,
+.nl-ledger-table { width: 100%; border-collapse: collapse; text-align: left; font-family: Rubik, sans-serif; font-size: 13px; color: #e3dbc9; }
+.nl-balances-table th, .nl-balances-table td,
+.nl-ledger-table th, .nl-ledger-table td { vertical-align: middle; white-space: nowrap; text-align: left; border-bottom: 1px solid #ffedcd14; }
+.nl-balances-table th,
+.nl-ledger-table th { color: #969088; font-weight: 400; font-size: 10px; letter-spacing: .3px; padding: 12px 16px; }
+.nl-balances-table td,
+.nl-ledger-table td { padding: 14px 16px; line-height: 24px; }
+.nl-balances-table th:first-child, .nl-balances-table td:first-child,
+.nl-ledger-table th:first-child, .nl-ledger-table td:first-child { padding-left: 22px; }
+.nl-balances-table th:last-child, .nl-balances-table td:last-child,
+.nl-ledger-table th:last-child, .nl-ledger-table td:last-child { padding-right: 22px; }
+.nl-balances-table tbody tr:last-child td,
+.nl-ledger-table tbody tr:last-child td { border-bottom: 0; }
+.nl-balances-table tbody tr:hover td,
+.nl-ledger-table tbody tr:hover td { background: #ffffff05; }
+.nl-balances-table .nl-balances-num,
+.nl-ledger-table .nl-ledger-num { text-align: right; font-variant-numeric: tabular-nums; }
+.nl-ledger-table .nl-ledger-end { text-align: right; }
+
+/* ------------------------------------------------------------------------
+ * Balances tab (app/game/Balances.tsx)
+ * ---------------------------------------------------------------------- */
+.nl-balances-tile-play { border-color: #fea91133; background: #fea91108; }
+.nl-balances-tile-play .nl-label { color: #c9a35c; }
+.nl-balances-tile-play strong { color: #fea911; }
+
+.nl-balances-holdings { background: #171815; border: 1px solid #ffedcd14; border-radius: 14px; overflow: hidden; }
+.nl-balances-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid #ffedcd14; }
+.nl-balances-head h2 { margin: 0; font-family: 'Bricolage Grotesque', Rubik, sans-serif; font-size: 17px; font-weight: 600; color: #ffedcd; letter-spacing: -.2px; }
+.nl-balances-head p { margin: 4px 0 0; color: #969088; font-size: 11px; }
+.nl-balances-actions { display: flex; gap: 9px; flex-shrink: 0; }
+.nl-balances-actions .nl-button { min-height: 38px; padding: 7px 14px; }
+
+.nl-balances-asset { display: inline-flex; align-items: center; gap: 9px; vertical-align: middle; }
+.nl-balances-asset .nl-coin { width: 24px; height: 24px; font-size: 9px; }
+.nl-balances-asset strong { color: #ffedcd; font-weight: 500; font-size: 13px; }
+.nl-balances-value { font-family: 'Bricolage Grotesque', Rubik, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -.2px; color: #ffedcd; }
+
+/* ------------------------------------------------------------------------
+ * History tab: deposits + withdrawals ledger (app/game/DepositHistory.tsx)
+ * ---------------------------------------------------------------------- */
+.nl-ledger-caption { color: #969088; font-size: 12px; line-height: 1.8; margin: 0 0 16px; }
+.nl-ledger-loading { text-align: center; padding: 60px 0; }
+.nl-ledger-scroll { border: 1px solid #ffedcd14; border-radius: 14px; background: #171815; }
+
+.nl-ledger-type { display: inline-flex; align-items: center; gap: 5px; border: 1px solid; border-radius: 999px; padding: 2px 9px 2px 7px; font-size: 11px; font-weight: 500; line-height: 18px; }
+.nl-ledger-deposit { color: #81dab2; border-color: #81dab233; background: #81dab20d; }
+.nl-ledger-withdraw { color: #f58b96; border-color: #f58b9633; background: #f58b960d; }
+
+.nl-ledger-time { font-variant-numeric: tabular-nums; }
+.nl-ledger-amount { font-family: 'Bricolage Grotesque', Rubik, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -.2px; font-variant-numeric: tabular-nums; }
+
+.nl-ledger-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #b5b1a7; }
+.nl-ledger-status-pending { color: #fea911; }
+.nl-ledger-status-pending::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.nl-ledger-status-failed { color: #f58b96; }
+
+.nl-ledger-tx { display: inline-flex; align-items: center; gap: 5px; color: #c7c1b7; font-size: 12px; font-variant-numeric: tabular-nums; text-decoration: none; }
+.nl-ledger-tx svg { color: #969088; }
+a.nl-ledger-tx:hover { color: #ffedcd; text-decoration: underline; text-underline-offset: 3px; }
+a.nl-ledger-tx:hover svg { color: #fea911; }
+.nl-ledger-none { color: #969088; }
+
+.nl-ledger-more { display: flex; justify-content: center; margin-top: 16px; }
+.nl-ledger-more .nl-button { min-width: 140px; }
+.nl-ledger-more .nl-button:disabled { opacity: .6; cursor: default; }
+
+@media (max-width: 760px) {
+  .nl-portfolio .nl-portfolio-heading { min-height: 62px; }
+  .nl-portfolio-heading .nl-eyebrow { line-height: 10px; margin-bottom: 4px; }
+  .nl-stat-tiles { gap: 8px; }
+  .nl-stat-tile { padding: 14px 12px; border-radius: 10px; }
+  .nl-stat-tile .nl-label { font-size: 10px; margin-bottom: 6px; }
+  .nl-stat-tile strong { font-size: 19px; letter-spacing: -.4px; }
+  .nl-stat-tile strong small { font-size: 10px; margin-left: 5px; }
+  .nl-stat-tile > small { font-size: 10px; margin-top: 6px; }
+  .nl-stat-caption { font-size: 11px; margin: 14px 0; }
+  .nl-balances-tiles { grid-template-columns: repeat(2, 1fr); }
+  .nl-balances-tile-play { grid-column: 1 / -1; }
+  .nl-balances-holdings, .nl-ledger-scroll { border-radius: 12px; }
+  .nl-balances-head { flex-wrap: wrap; padding: 14px; }
+  .nl-balances-actions { width: 100%; }
+  .nl-balances-actions .nl-button { flex: 1; }
+  .nl-ledger-caption { font-size: 11px; margin-bottom: 14px; }
+  .nl-balances-table, .nl-ledger-table { font-size: 12px; }
+  .nl-balances-table th, .nl-ledger-table th { padding: 10px 12px; }
+  .nl-balances-table td, .nl-ledger-table td { padding: 12px 12px; line-height: 22px; }
+  .nl-balances-table th:first-child, .nl-balances-table td:first-child,
+  .nl-ledger-table th:first-child, .nl-ledger-table td:first-child { padding-left: 14px; }
+  .nl-balances-table th:last-child, .nl-balances-table td:last-child,
+  .nl-ledger-table th:last-child, .nl-ledger-table td:last-child { padding-right: 14px; }
+  .nl-balances-value, .nl-ledger-amount { font-size: 14px; }
+}

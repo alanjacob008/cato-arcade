@@ -1,0 +1,20 @@
+{
+  "environment": "Node worker and real Three.js geometry tests; not browser FPS/TTI or actual GPU memory",
+  "worker": {
+    "computeMs": 2145,
+    "roundTripMs": 2251,
+    "heartbeatsDuringCreate": 76,
+    "totalTestMs": 6240
+  },
+  "compactTravel": {
+    "width": 2.45,
+    "depth": 2.18
+  },
+  "fullOpenEnvelope": {
+    "width": 2.138,
+    "depth": 1.821
+  },
+  "steadyWebGLContexts": 1,
+  "temporaryThumbnailContexts": 1,
+  "renderPixelBudget": 2500000
+}

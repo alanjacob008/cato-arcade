@@ -1,0 +1,678 @@
+/* Staking page, built on the Phantom Dark tokens in design.md. */
+.page {
+  --amber: #fea911;
+  --amber-strong: #d3601e;
+  --cream: #ffedcd;
+  --espresso: #1c0d00;
+  --bg: #121212;
+  --surface: #1a1a1a;
+  --line: rgba(227, 122, 38, 0.24);
+  --line-strong: rgba(227, 122, 38, 0.55);
+  --muted: #a7a0b8;
+  --fg: #f5f5f5;
+  --error: #ed2939;
+  --display: var(--font-display), var(--font-brand), system-ui, sans-serif;
+  /* Cat size, and how far it rises above the card (paws sit at 66% of the art). */
+  --cat: 240px;
+  --perch: calc(var(--cat) * 0.64);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(440px, 540px);
+  grid-template-areas: "intro action";
+  column-gap: clamp(48px, 7vw, 136px);
+  /* Both columns end on the same line: the payout row lines up with the card's bottom edge. */
+  align-items: end;
+  align-content: center;
+  max-width: 1400px;
+  /* Fill the screen below the site header (67px tall). */
+  min-height: calc(100vh - 67px);
+  margin: 0 auto;
+  padding: 32px clamp(24px, 4vw, 64px);
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+/* Warm light falling on the staking card. */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 35%;
+  background: radial-gradient(
+    ellipse 55% 50% at 66% 56%,
+    rgba(254, 169, 17, 0.14),
+    rgba(211, 96, 30, 0.05) 45%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.page > * {
+  position: relative;
+  z-index: 1;
+}
+.page *:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+.intro {
+  grid-area: intro;
+}
+.action {
+  grid-area: action;
+}
+
+/* Hero. The title is the page's h1 on /staking and an h2 when the panel is embedded on the home page. */
+.hero :is(h1, h2) {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(44px, 5vw, 76px);
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+.hero p {
+  max-width: 30em;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: clamp(17px, 1.3vw, 20px);
+  line-height: 1.55;
+}
+
+/* APY, pool stats and payout clock */
+.poolStats {
+  margin-top: clamp(28px, 3.5vw, 44px);
+}
+.apy {
+  display: grid;
+  gap: 6px;
+}
+.apyLabel {
+  color: var(--muted);
+  font-size: 16px;
+}
+.apyValue {
+  color: var(--amber);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(88px, 10vw, 156px);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 60px rgba(254, 169, 17, 0.28);
+}
+.apyNote {
+  --ticker-color: var(--amber);
+  color: var(--muted);
+  font-size: 15px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  margin: 28px 0 0;
+  padding: 0;
+}
+.stats div {
+  margin: 0;
+  padding: 2px 32px 2px 0;
+}
+.stats div + div {
+  padding-left: 32px;
+  border-left: 1px solid var(--line);
+}
+.stats dt {
+  color: var(--muted);
+  font-size: 14px;
+}
+.stats dd {
+  margin: 6px 0 0;
+  font-weight: 600;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.payout {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  max-width: 620px;
+}
+.payoutMain {
+  display: grid;
+  gap: 4px;
+}
+.payoutLabel {
+  color: var(--muted);
+  font-size: 14px;
+}
+.payoutValue {
+  font-weight: 600;
+  font-size: clamp(26px, 2.4vw, 34px);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.payoutMeta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: right;
+}
+
+/* Stage: the cat rests on top of the card */
+.stage {
+  position: relative;
+  margin-top: var(--perch);
+}
+.card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  border-radius: 24px;
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(180deg, rgba(254, 169, 17, 0.07), rgba(254, 169, 17, 0) 40%),
+    #191715;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 237, 205, 0.08),
+    0 40px 80px -30px rgba(0, 0, 0, 0.8),
+    0 0 70px -20px rgba(254, 169, 17, 0.28);
+  text-align: left;
+  box-sizing: border-box;
+}
+.cardBody,
+.cardBodyHidden {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.cardBodyHidden {
+  visibility: hidden;
+}
+/* While the chat is open the card needs room for the conversation. */
+.cardChat {
+  min-height: 500px;
+}
+.chatLayer {
+  position: absolute;
+  inset: 28px 32px;
+  z-index: 2;
+}
+
+/* Disconnected card */
+.lockedTitle {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.lockedCopy {
+  margin: 10px 0 28px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.perks {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.perks li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.perks svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--amber);
+}
+
+/* Buttons */
+.primary {
+  --ticker-color: currentColor;
+  display: block;
+  width: 100%;
+  min-height: 64px;
+  padding: 18px 28px;
+  border: none;
+  border-radius: 9999px;
+  background: var(--cream);
+  color: var(--espresso);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.primary:hover:not(:disabled) {
+  background: var(--amber);
+}
+.primary:active:not(:disabled) {
+  transform: scale(0.99);
+}
+.primary:disabled {
+  cursor: not-allowed;
+  background: #3a332a;
+  color: #8a8172;
+}
+
+/* Connected card */
+.cardHead {
+  display: flex;
+  margin-bottom: 22px;
+}
+.tabs {
+  display: flex;
+  flex: 1;
+  padding: 4px;
+  border-radius: 9999px;
+  background: var(--bg);
+  border: 1px solid #2a2a30;
+}
+.tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease;
+}
+.tab:hover {
+  color: var(--fg);
+}
+.tab[aria-selected="true"] {
+  background: rgba(254, 169, 17, 0.14);
+  color: var(--amber);
+}
+.wallet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.linkButton {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.linkButton:hover {
+  color: var(--fg);
+}
+
+.position {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0 0 20px;
+}
+.position div {
+  margin: 0;
+}
+.position dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+.position dd {
+  margin: 4px 0 0;
+  font-weight: 600;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+.position .positionSub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.warming {
+  margin: -6px 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Tab panels stacked in one cell: height = tallest panel, so no jumping. */
+.panels {
+  display: grid;
+}
+.panel {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.panelHidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Amount box */
+.amountBox {
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--bg);
+  border: 1px solid #2a2a30;
+  transition: border-color 150ms ease;
+}
+.amountBox:focus-within {
+  border-color: var(--line-strong);
+}
+.amountTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid #2a2a30;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip:hover {
+  color: var(--amber);
+  border-color: var(--line-strong);
+}
+.amountRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.token {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 9999px;
+  background: var(--surface);
+  font-size: 16px;
+  font-weight: 600;
+}
+.token img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--cream);
+}
+.amountInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 38px;
+  font-weight: 600;
+  text-align: right;
+  outline: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.amountInput:focus-visible {
+  outline: none;
+}
+.amountInput::placeholder {
+  color: #4a4a52;
+}
+.amountInput::-webkit-outer-spin-button,
+.amountInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 4px 18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.summary strong {
+  white-space: nowrap;
+  color: var(--fg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.error {
+  margin: 10px 4px 0;
+  color: var(--error);
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 18px;
+}
+
+/* Rewards tab */
+.rewards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 18px;
+}
+.rewards dt {
+  color: var(--muted);
+  font-size: 15px;
+}
+.rewards dd {
+  --ticker-color: var(--amber);
+  margin: 6px 0 0;
+  color: var(--amber);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 52px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.earned {
+  display: grid;
+  gap: 2px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+
+/* Shorter laptop screens: scale down so the page still fits without scrolling. */
+@media (min-width: 1025px) and (max-height: 860px) {
+  .page {
+    --cat: 200px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .hero :is(h1, h2) {
+    font-size: clamp(40px, 4.2vw, 60px);
+  }
+  .hero p {
+    margin-top: 12px;
+    font-size: 17px;
+  }
+  .poolStats {
+    margin-top: 24px;
+  }
+  .apyValue {
+    font-size: clamp(76px, 8vw, 118px);
+  }
+  .stats,
+  .payout {
+    margin-top: 20px;
+  }
+  .payout {
+    padding-top: 16px;
+  }
+  .card {
+    padding: 26px 28px;
+  }
+  .cardChat {
+    min-height: 452px;
+  }
+  .chatLayer {
+    inset: 22px 28px;
+  }
+  .primary {
+    min-height: 56px;
+    padding: 14px 24px;
+  }
+  .cardHead,
+  .position {
+    margin-bottom: 16px;
+  }
+  .amountInput {
+    font-size: 32px;
+  }
+}
+
+/* Tablet and below: one column, centred. */
+@media (max-width: 1024px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "intro"
+      "action";
+    row-gap: 8px;
+    min-height: 0;
+    padding: 36px 16px 64px;
+  }
+  .page::before {
+    inset: 30% 0 0 0;
+  }
+  .intro {
+    padding-top: 0;
+    text-align: center;
+  }
+  .hero p,
+  .payout {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .stats {
+    justify-content: center;
+  }
+  .payout {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .payoutMeta {
+    text-align: center;
+  }
+  .action {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 520px) {
+  .page {
+    --cat: 180px;
+  }
+  .stats {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 14px;
+  }
+  .stats div,
+  .stats div + div {
+    padding: 0 12px;
+  }
+  .stats div:nth-child(3) {
+    grid-column: 1 / -1;
+    border-left: none;
+  }
+  .card {
+    padding: 22px 20px;
+  }
+  .cardChat {
+    min-height: 480px;
+  }
+  .chatLayer {
+    inset: 20px;
+  }
+  .position {
+    grid-template-columns: 1fr 1fr;
+  }
+  .position div:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+  .amountInput {
+    font-size: 28px;
+  }
+  .rewards dd {
+    font-size: 38px;
+  }
+  /* Error messages can wrap on phones; reserve both lines so the card never grows. */
+  .error {
+    min-height: 36px;
+  }
+}
+
+/* Large screens: use the extra width instead of leaving wide margins. */
+@media (min-width: 1600px) and (min-height: 940px) {
+  .page {
+    --cat: 280px;
+    max-width: 1640px;
+    grid-template-columns: minmax(0, 1fr) 600px;
+  }
+  .hero :is(h1, h2) {
+    font-size: 92px;
+  }
+  .hero p {
+    font-size: 21px;
+  }
+  .apyValue {
+    font-size: 180px;
+  }
+  .stats dd {
+    font-size: 30px;
+  }
+  .payoutValue {
+    font-size: 38px;
+  }
+  .payout {
+    max-width: 720px;
+  }
+  .card {
+    padding: 36px;
+  }
+}

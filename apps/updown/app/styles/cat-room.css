@@ -1,0 +1,25 @@
+/* Cato's spot: the side-panel card on the play screen the roaming 3D cat (app/cat/CatOverlay) trots to. The cat itself
+   is drawn by the fixed overlay; this is the back wall and the floor it lands on (the `[data-cat-home]` anchor), and
+   the home of the static PNG pose when the overlay can't run. Brand colours come from updown.css (--nl-amber). */
+.nl-cat-room { --room-horizon:66%; --room-glow:#fea91130; --room-wall:#1d1a14; --room-wall-deep:#111009; --room-floor:#2a241a; --room-floor-deep:#15120c;
+  position:relative; box-sizing:border-box; width:100%; height:100%; min-height:220px; overflow:hidden; border-radius:12px; isolation:isolate;
+  background:
+    radial-gradient(120% 70% at 50% -6%, var(--room-glow), transparent 62%),
+    linear-gradient(180deg, var(--room-wall) 0%, var(--room-wall-deep) var(--room-horizon),
+      var(--room-floor) calc(var(--room-horizon) + 0.3%), var(--room-floor-deep) 100%);
+  touch-action:manipulation; -webkit-tap-highlight-color:transparent; user-select:none; }
+/* skirting line where the wall meets the floor, plus a soft pool of light on the floor under the cat */
+.nl-cat-room::before { content:""; position:absolute; left:0; right:0; top:var(--room-horizon); height:1px; background:#ffedcd14; pointer-events:none; }
+.nl-cat-room::after { content:""; position:absolute; left:50%; top:var(--room-horizon); width:70%; height:34%; transform:translateX(-50%);
+  background:radial-gradient(50% 50% at 50% 50%, #fea9111c, transparent 70%); pointer-events:none; }
+/* fallback (no WebGL, reduced motion, renderer failed): the PNG pose standing on the same floor */
+.nl-cat-room-img { position:absolute; left:50%; bottom:8%; z-index:1; width:auto; height:64%; max-width:84%; transform:translateX(-50%);
+  object-fit:contain; pointer-events:none; filter:drop-shadow(0 10px 8px #00000066); }
+/* with the overlay on, the spot shows a slow-breathing glow on the floor where the cat lands (feet at bottom:8%) */
+.nl-cat-home-spot { position:absolute; left:50%; bottom:3%; width:46%; height:14%; transform:translateX(-50%); pointer-events:none;
+  border-radius:50%; background:radial-gradient(50% 50% at 50% 50%, #fea91138, #fea9110c 55%, transparent 72%);
+  animation:nl-cat-spot-breathe 4s ease-in-out infinite; }
+@keyframes nl-cat-spot-breathe { 0%, 100% { opacity:.7; transform:translateX(-50%) scale(1); } 50% { opacity:1; transform:translateX(-50%) scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .nl-cat-home-spot { animation:none; } }
+/* the roaming overlay: fixed, full viewport, click-through except for the cat's hitbox (inline styles in CatOverlay) */
+.nl-cat-overlay canvas { display:block; }

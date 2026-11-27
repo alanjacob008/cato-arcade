@@ -1,0 +1,44 @@
+{
+  "environment": "Node offline CPU benchmarks, not browser FPS/TTI or GPU memory measurements",
+  "createPileMs": [
+    2320,
+    2169,
+    1940
+  ],
+  "settle63BoxesMs": 651,
+  "settlementFrames": 31,
+  "retainedHeapDeltaMiB": 13.71,
+  "textures": [
+    {
+      "name": "concrete-diffuse.jpg",
+      "bytes": 927975,
+      "width": 1024,
+      "height": 1024,
+      "rgbaMipMiB": 5.33
+    },
+    {
+      "name": "concrete-normal.jpg",
+      "bytes": 883889,
+      "width": 1024,
+      "height": 1024,
+      "rgbaMipMiB": 5.33
+    },
+    {
+      "name": "concrete-arm.jpg",
+      "bytes": 614195,
+      "width": 1024,
+      "height": 1024,
+      "rgbaMipMiB": 5.33
+    }
+  ],
+  "totalTextureDownloadMiB": 2.31,
+  "estimatedFloorRgbaMipMiB": 15.99,
+  "boxVertices": 3564,
+  "boxTriangles": 1188,
+  "boxMaterialGroups": 3,
+  "minimumBoxMainPassDrawCalls": 192,
+  "staticTokenWebGLContexts": {
+    "tray": 3,
+    "shopOpen": 6
+  }
+}

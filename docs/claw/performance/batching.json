@@ -1,0 +1,13 @@
+{
+  "environment": "Real Three.js scene graphs, lifecycle callbacks and SSR; not measured browser FPS or GPU timings",
+  "prizeMainPassGroupBudget": {
+    "before": 192,
+    "after": 9,
+    "carrying": 12
+  },
+  "staticInstanceUploadsAfterInitial": 0,
+  "shadowRefreshHzMax": 30,
+  "renderRefreshHzMax": 60,
+  "initialHtmlPreloads": 2,
+  "gripPlanning": "worker; descent waits for the unchanged contact plan"
+}

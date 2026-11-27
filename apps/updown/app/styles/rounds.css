@@ -1,0 +1,48 @@
+/* Rounds tab: a game history, not a trading terminal. Self-contained nl-rounds-* classes.
+   The stat tiles and caption use the shared .nl-stat-* rules in portfolio.css (same metrics as Balances). */
+.nl-rounds { --nlr-cream:#ffedcd; --nlr-muted:#969088; --nlr-border:#ffedcd14; --nlr-amber:#fea911; --nlr-green:#81dab2; --nlr-red:#f58b96; }
+
+.nl-rounds-scroll { border:1px solid var(--nlr-border); border-radius:14px; background:#171815; }
+.nl-rounds-table { width:100%; border-collapse:collapse; text-align:left; font-family:Rubik,sans-serif; font-size:13px; color:#e3dbc9; }
+.nl-rounds-table th,.nl-rounds-table td { vertical-align:middle; white-space:nowrap; text-align:left; border-bottom:1px solid var(--nlr-border); }
+.nl-rounds-table th { color:var(--nlr-muted); font-weight:400; font-size:10px; letter-spacing:.3px; padding:12px 16px; }
+.nl-rounds-table td { padding:14px 16px; line-height:24px; }
+.nl-rounds-table th:first-child,.nl-rounds-table td:first-child { padding-left:22px; }
+.nl-rounds-table th:last-child,.nl-rounds-table td:last-child { padding-right:22px; }
+.nl-rounds-table tbody tr:last-child td { border-bottom:0; }
+.nl-rounds-table tbody tr:hover td { background:#ffffff05; }
+/* Numeric columns (Bet, Leverage, Entry, Exit, Price move, Result): right-aligned, header included. */
+.nl-rounds-table .nl-rounds-num { text-align:right; font-variant-numeric:tabular-nums; }
+
+/* Market cell: one line - icon, ticker, Up/Down call - all on one baseline, icon centred on the text. */
+.nl-rounds-market { display:inline-flex; align-items:center; gap:9px; vertical-align:middle; }
+.nl-rounds-market .nl-coin { width:24px; height:24px; font-size:9px; }
+.nl-rounds-market strong { color:var(--nlr-cream); font-weight:500; font-size:13px; }
+.nl-rounds-call { display:inline-flex; align-items:center; gap:3px; font-size:12px; font-weight:500; }
+
+/* Trade time ("14:32" or "9 Oct, 14:32") and Game time ("30s", "3m"): text columns, left. Game time and Leverage are secondary - softer, still readable. */
+.nl-rounds-table .nl-rounds-time { font-variant-numeric:tabular-nums; }
+.nl-rounds-table .nl-rounds-duration,.nl-rounds-table .nl-rounds-leverage { color:#b5b1a7; font-variant-numeric:tabular-nums; }
+.nl-rounds-move { font-weight:500; }
+.nl-rounds-pending { color:var(--nlr-muted); }
+
+.nl-rounds-result { display:inline-block; font-family:Rubik,sans-serif; font-size:13px; font-weight:600; letter-spacing:0; color:var(--nlr-cream); font-variant-numeric:tabular-nums; }
+.nl-rounds-result.nl-rounds-pending { color:var(--nlr-muted); font-weight:400; }
+
+/* Status column: visible, left-aligned header. Closed rounds read a muted "Done"; anything else gets a pill. */
+.nl-rounds-table .nl-rounds-status-col { text-align:left; }
+
+/* Right call, but fees outweighed the gain: a quiet tag in the Status cell of that closed round. */
+.nl-rounds-fee-tag { display:inline-block; padding:2px 5px; border:1px solid #ffedcd1a; border-radius:3px; font-size:10px; line-height:14px; color:#969088; font-weight:400; vertical-align:middle; white-space:nowrap; cursor:help; }
+
+@media (max-width:760px) {
+  .nl-rounds-scroll { border-radius:12px; }
+  .nl-rounds-table { font-size:12px; }
+  .nl-rounds-table th { padding:10px 12px; }
+  .nl-rounds-table td { padding:12px 12px; line-height:22px; }
+  .nl-rounds-market .nl-coin { width:22px; height:22px; }
+  .nl-rounds-market { gap:8px; }
+  .nl-rounds-table th:first-child,.nl-rounds-table td:first-child { padding-left:14px; }
+  .nl-rounds-table th:last-child,.nl-rounds-table td:last-child { padding-right:14px; }
+  .nl-rounds-result { font-size:12px; }
+}

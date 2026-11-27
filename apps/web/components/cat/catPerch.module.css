@@ -1,0 +1,130 @@
+/*
+ * Pose images are 1080 x 1320 with the paws on y = 952 (see catPose.ts), so at
+ * width --cat the paw line is --cat * 952/1080 below the image top. The perch
+ * box covers everything above the card; the image hangs out of it so the tail
+ * can drape over the card edge.
+ */
+.perch {
+  --paw: calc(var(--cat, 240px) * 0.8815);
+  position: absolute;
+  top: calc(var(--paw) * -1 + 4px);
+  left: -8px;
+  z-index: 2;
+  width: var(--cat, 240px);
+  height: var(--paw);
+  padding: 0;
+  border: none;
+  border-radius: 24px;
+  background: none;
+}
+.clickable {
+  cursor: pointer;
+}
+.clickable:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 3px;
+}
+.cat {
+  display: block;
+  width: var(--cat, 240px);
+  height: calc(var(--cat, 240px) * 1.2222);
+  pointer-events: none;
+  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.35));
+  transform-origin: 40% 72%;
+  transition: transform 200ms ease;
+}
+.clickable:hover .cat {
+  transform: rotate(-3deg) translateY(-3px);
+}
+.asleep {
+  animation: breathe 3.4s ease-in-out infinite;
+}
+.awake {
+  animation: settle 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.bubble {
+  --ticker-color: #d3601e;
+  position: absolute;
+  top: calc(var(--perch, 154px) * -1 + 12px);
+  left: calc(var(--cat, 240px) * 0.92);
+  right: 0;
+  max-width: 290px;
+  padding: 12px 16px;
+  border-radius: 16px 16px 16px 4px;
+  background: #ffedcd;
+  color: #1c0d00;
+  font-size: 15px;
+  line-height: 1.4;
+  z-index: 3;
+}
+.bubble::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  bottom: 0;
+  border: 8px solid transparent;
+  border-right-color: #ffedcd;
+  border-bottom-color: #ffedcd;
+}
+.bubbleText {
+  display: block;
+  animation: pop 260ms ease-out both;
+}
+.action {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #d3601e;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.action:hover {
+  color: #1c0d00;
+}
+.action:focus-visible {
+  outline: 2px solid #1c0d00;
+  outline-offset: 3px;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-1.5px) scale(1.015); }
+}
+@keyframes settle {
+  0% { transform: translateY(6px) scale(0.97); }
+  60% { transform: translateY(-4px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .asleep,
+  .awake,
+  .bubbleText {
+    animation: none;
+  }
+  .cat {
+    transition: none;
+  }
+}
+@media (max-width: 520px) {
+  .bubble {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
+@media (min-width: 1600px) and (min-height: 940px) {
+  .bubble {
+    font-size: 16px;
+    max-width: 320px;
+  }
+}

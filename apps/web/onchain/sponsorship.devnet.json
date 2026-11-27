@@ -1,0 +1,13 @@
+{
+  "cluster": "devnet",
+  "program": "5sWQhWwQrxwuhK2z82g6rupt5ixxPsyrxdUFtSSUwbE8",
+  "deploymentAuthority": "EWFPbtH2Zeopd8ffK9W4L2UbxxY5ppFpwUgbybF6S7Lv",
+  "status": "verified_build_not_deployed",
+  "verifiedArtifact": {
+    "sourceCommit": "a74f9e551f1f13741435e23376d7a5cbab8e4a98",
+    "buildRun": 45342016785,
+    "archiveDigest": "sha256:4d11b5b53dce620f8317a0f997ed2ea27b0c4f3b7b5876ba6cc4174a62c0f629",
+    "bytes": 190776,
+    "sha256": "cf7bef56612fadeff415b907add9ab6b05ffa43dc26fb3bff92f13ffd6543801"
+  }
+}

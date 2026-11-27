@@ -1,0 +1,25 @@
+{
+  "cluster": "devnet",
+  "genesisHash": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+  "adminAuthority": "EWFPbtH2Zeopd8ffK9W4L2UbxxY5ppFpwUgbybF6S7Lv",
+  "deploymentAuthority": "EWFPbtH2Zeopd8ffK9W4L2UbxxY5ppFpwUgbybF6S7Lv",
+  "buildFeatures": [
+    "devnet"
+  ],
+  "vrfProbeProgram": "FYrH8Zsey8799rw5tygGDfm5JX55Mersz3ArAufJCctE",
+  "vrfProgram": "Vrf1RNUjXmQGjmQrQLvJHs9SNkvDJEsRVFPkfSQUwGz",
+  "vrfQueue": "Cuj97ggrhhidhbu39TijNVqE74xvKJ69gDervRUXAxGh",
+  "rpcUrlEnvironmentVariable": "HELIUS_DEVNET_RPC_URL",
+  "publicRpcFallback": "https://api.devnet.solana.com",
+  "walletConnection": "phantom",
+  "vrfProbeStatus": "deployed",
+  "verifiedArtifact": {
+    "sourceCommit": "143d3e3b7699eef1761730d2540c555d91ab3ee5",
+    "bytes": 618920,
+    "sha256": "54ae40aebcb3cbde3f7f3e7e1cb1d68e3be6cb17e11b69db5e25181d3156ec83",
+    "capabilities": [
+      "bounded-er-pool-v1",
+      "devnet-cashier-v1"
+    ]
+  }
+}

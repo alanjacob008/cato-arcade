@@ -1,0 +1,152 @@
+/* SDK colors and chart colors live together in utils/cato-theme.ts. */
+:root {
+  color-scheme: dark;
+  font-family: Rubik, system-ui, sans-serif;
+  background: #121212;
+  color: #f5f5f5;
+}
+body {
+  margin: 0;
+}
+button,
+input {
+  font: inherit;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 3px;
+}
+::selection {
+  background: #fea911;
+  color: #1c0d00;
+}
+.cato-brand {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  padding-right: 16px;
+  white-space: nowrap;
+}
+.cato-brand img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+.cato-brand-wordmark {
+  color: #ffedcd;
+  font-family: "Bricolage Grotesque", Rubik, sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.cato-brand-wordmark > span {
+  display: block;
+  margin-top: 5px;
+  color: #fea911;
+  font-family: Rubik, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.27em;
+}
+.cato-terminal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 76px;
+  padding: 9px 22px;
+  border-bottom: 1px solid #ffedcd12;
+  background: linear-gradient(100deg, #241c12 0%, #171614 45%, #161616 100%);
+}
+.cato-terminal-intro {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.cato-terminal-intro > img {
+  width: 44px;
+  height: 54px;
+  object-fit: contain;
+}
+.cato-terminal-intro strong {
+  display: block;
+  font-family: "Bricolage Grotesque", Rubik, sans-serif;
+  font-size: 19px;
+  font-weight: 650;
+  color: #ffedcd;
+  letter-spacing: -0.025em;
+}
+.cato-terminal-intro div > span {
+  display: block;
+  color: #a7a099;
+  font-size: 11px;
+  margin-top: 3px;
+}
+.cato-terminal-status {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cato-testnet-label {
+  color: #fea911;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+.cato-powered {
+  color: #928d86;
+  font-size: 10px;
+}
+.cato-trading-page {
+  min-height: calc(100dvh - 180px);
+}
+@media (max-width: 767px) {
+  .cato-brand {
+    gap: 5px;
+    padding-right: 0;
+  }
+  .cato-brand img {
+    width: 32px;
+    height: 32px;
+  }
+  .cato-brand-wordmark {
+    font-size: 18px;
+  }
+  .cato-brand-wordmark > span {
+    font-size: 7px;
+    margin-top: 3px;
+  }
+  .cato-terminal-bar {
+    min-height: 60px;
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .cato-terminal-intro {
+    gap: 8px;
+  }
+  .cato-terminal-intro > img {
+    width: 32px;
+    height: 40px;
+  }
+  .cato-terminal-intro strong {
+    font-size: 15px;
+  }
+  .cato-terminal-intro div > span {
+    display: none;
+  }
+  .cato-testnet-label {
+    font-size: 8px;
+    letter-spacing: 0.02em;
+    max-width: 105px;
+  }
+  .cato-powered {
+    font-size: 9px;
+  }
+}

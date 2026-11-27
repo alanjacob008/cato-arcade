@@ -1,0 +1,320 @@
+/* Play screen ("/") layout. Loaded with the Game route, after updown.css. */
+
+/* The shell fills the viewport between the 64px header and the 29px scaffold footer. Shared control tokens live here so
+   the chart card's call-to-action and the play panel draw the same Up / Down buttons. */
+.nl-game-shell { --nl-chrome:93px; --pp-surface:#111310; --pp-raised:#1b1c18; --pp-line:#ffedcd14; --pp-line-strong:#ffedcd24;
+  --pp-radius:12px; --pp-seg:48px; --pp-gap:14px; --pp-up:#2fbf71; --pp-down:#e5484d; --pp-ease:160ms ease;
+  display:flex; flex-direction:column; min-height:calc(100dvh - var(--nl-chrome)); }
+.nl-game-shell > .nl-game-grid { flex:1 1 auto; min-height:0; }
+
+/* Hero: two lines. */
+.nl-game-heading { align-items:flex-end; min-height:76px; }
+
+/* ---- Chart card toolbar -------------------------------------------------------------------------------------------
+   One quiet line: what the chart shows, the streak when there is one, the record, and the LIVE dot. Never a market or a
+   price. */
+.nl-game-shell .nl-chart-toolbar { display:flex; align-items:center; gap:14px; margin:0 24px; padding:20px 0 12px; border-top:0; }
+.nl-game-shell .nl-chart-toolbar > span:first-child { font-size:11px; font-weight:500; color:#d8d2c6; letter-spacing:.2px; }
+.nl-game-shell .nl-chart-toolbar .nl-record { margin-left:auto; }
+.nl-game-shell .nl-chart-toolbar .nl-live { margin-left:0; }
+.nl-streak { flex-shrink:0; display:inline-flex; align-items:center; gap:4px; height:24px; padding:0 10px; border:1px solid #fea91140; border-radius:999px; background:#fea91114; color:var(--nl-amber); font-size:11px; font-weight:600; letter-spacing:.3px; white-space:nowrap; }
+
+/* Right column: Cato's room on top, the controls below. The column stretches to the chart card's height. */
+.nl-side-column { display:flex; flex-direction:column; gap:22px; min-height:0; }
+.nl-side-column > .nl-play-panel { flex:1 1 auto; }
+
+/* ---- CAT_PANEL --------------------------------------------------------------------------------------------------
+   Cato's room: a fixed-height card the 3D scene can fill (the canvas is sized to this box, never the page). Until the
+   3D cat arrives, the pose images sit on its floor. */
+.nl-cat-panel { position:relative; flex:0 0 auto; height:236px; overflow:hidden; border:1px solid var(--nl-border); border-radius:16px;
+  background:radial-gradient(120% 90% at 50% 100%, #fea91114, transparent 60%), linear-gradient(180deg, #1d1e19 0%, #171815 100%); }
+.nl-cat-panel::after { content:''; position:absolute; left:0; right:0; bottom:0; height:38%; background:linear-gradient(180deg, transparent, #0c0d0b66); pointer-events:none; }
+
+/* Both panels stretch to the grid row; content changes never resize them. */
+.nl-game-shell .nl-market-panel,.nl-game-shell .nl-play-panel { display:flex; flex-direction:column; min-height:0; }
+.nl-chart-area { flex:1 1 0; min-height:300px; display:flex; flex-direction:column; }
+
+/* ---- Result chart ------------------------------------------------------------------------------------------------
+   The round's unrealised net result on one fixed canvas: the zero line is always the vertical middle, green above, red
+   below, and a leading dot with a small value pill rides the latest sample. Idle, sending, open and closed all draw on
+   the same plot (same height, same viewBox), so a phase change never moves anything; only overlays crossfade. */
+.nl-pnl-chart { flex:1 1 auto; display:flex; flex-direction:column; min-height:0; padding:0 15px; }
+.nl-pnl-head { display:flex; align-items:center; justify-content:space-between; gap:8px 14px; height:30px; padding:0 10px 6px; color:var(--nl-muted); font-size:10px; }
+.nl-pnl-legend { display:flex; align-items:center; gap:6px; white-space:nowrap; }
+.nl-pnl-legend i { display:inline-block; width:12px; height:2px; border-radius:1px; }.nl-pnl-key-profit { background:var(--nl-green); }.nl-pnl-key-loss { background:var(--nl-red); margin-left:6px; }
+.nl-pnl-caption { margin-left:8px; color:#6f6a5f; }
+.nl-pnl-pinned { display:flex; align-items:baseline; gap:10px; margin-left:auto; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.nl-pnl-countdown { font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:15px; font-weight:600; color:var(--nl-cream); letter-spacing:-.1px; }
+.nl-pnl-note { font-size:10px; letter-spacing:1.4px; text-transform:uppercase; color:var(--nl-muted); }
+.nl-pnl-units { display:flex; gap:2px; padding:2px; border:1px solid var(--nl-border); border-radius:7px; }
+.nl-pnl-units button { min-width:28px; height:22px; padding:0 6px; border:0; border-radius:5px; background:transparent; color:var(--nl-muted); font-size:11px; font-weight:600; }
+.nl-pnl-units button[aria-pressed=true] { color:var(--nl-amber); background:#fea91114; }
+.nl-pnl-plot { position:relative; flex:1 1 0; min-height:220px; }
+.nl-pnl-plot > svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.nl-pnl-grid { stroke:#ffedcd0a; stroke-width:1; vector-effect:non-scaling-stroke; }
+.nl-pnl-zero { stroke:#ffedcd2e; stroke-width:1; stroke-dasharray:3 5; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+.nl-pnl-line { stroke:var(--nl-cream); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
+.nl-pnl-area-profit { fill:#81dab222; }
+.nl-pnl-area-loss { fill:#f58b9622; }
+/* The zero line is break-even (the close fee is already in every sample): a small-caps tag at its left end, and one soft
+   pulse along it the first time a round's line crosses it upward. */
+.nl-pnl-breakeven { position:absolute; left:0; bottom:calc(50% + 6px); pointer-events:none; font-size:9px; font-weight:600; letter-spacing:1.3px; text-transform:uppercase; color:#6f6a5f; }
+.nl-pnl-zero-cross { animation:nl-pnl-cross 1.4s ease-out 1; }
+@keyframes nl-pnl-cross { 0% { stroke:#ffedcd2e; } 25% { stroke:var(--nl-green); stroke-dasharray:3 2; } 100% { stroke:#ffedcd2e; } }
+/* The first sample is the fees paid to open: a tiny dot with a micro label under it while the line is short, fading once
+   the result has moved a couple of gaps away or half a minute in. */
+.nl-pnl-fee { position:absolute; width:0; height:0; pointer-events:none; color:#6f6a5f; transition:opacity 600ms ease, visibility 0s 600ms; }
+.nl-pnl-fee i { position:absolute; left:-3px; top:-3px; width:6px; height:6px; border-radius:50%; background:#9d968a; box-shadow:0 0 0 2px #171815; }
+.nl-pnl-fee small { position:absolute; left:-1px; top:7px; font-size:9px; letter-spacing:1.3px; text-transform:uppercase; white-space:nowrap; }
+.nl-pnl-fee[data-faded] { opacity:0; visibility:hidden; }
+
+/* Leading dot and value pill: HTML, not SVG, so the stretched viewBox never deforms them. They glide between samples. */
+.nl-pnl-lead { --nl-lead:var(--nl-cream); position:absolute; left:0; top:50%; width:0; height:0; pointer-events:none; transition:left .25s linear, top .25s ease-out; }
+.nl-pnl-lead.nl-positive { --nl-lead:var(--nl-green); }
+.nl-pnl-lead.nl-negative { --nl-lead:var(--nl-red); }
+.nl-pnl-dot { position:absolute; left:-5px; top:-5px; width:10px; height:10px; border-radius:50%; background:var(--nl-lead); box-shadow:0 0 0 2px #171815, 0 0 0 4px color-mix(in srgb, var(--nl-lead) 35%, transparent); transition:background var(--pp-ease), box-shadow var(--pp-ease); }
+.nl-pnl-dot::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid var(--nl-lead); opacity:0; }
+.nl-pnl-pill { position:absolute; top:0; left:12px; display:flex; align-items:baseline; gap:7px; transform:translateY(-50%); padding:4px 9px; border:1px solid color-mix(in srgb, var(--nl-lead) 45%, transparent); border-radius:999px; background:#121310f0; white-space:nowrap; box-shadow:0 6px 16px -8px #000c; }
+.nl-pnl-lead[data-side=left] .nl-pnl-pill { left:auto; right:12px; }
+.nl-pnl-value { font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:14px; font-weight:650; line-height:1; letter-spacing:-.2px; color:var(--nl-cream); font-variant-numeric:tabular-nums; }
+.nl-pnl-final { font-size:9px; letter-spacing:1.4px; text-transform:uppercase; color:var(--nl-muted); }
+.nl-pnl-closed .nl-pnl-dot { box-shadow:0 0 0 2px #171815, 0 0 0 5px color-mix(in srgb, var(--nl-lead) 35%, transparent); }
+
+/* Sending: a shimmer runs along the zero guide, the origin dot breathes, the step label crossfades. Nothing else moves. */
+.nl-pnl-sending .nl-pnl-dot { --nl-lead:var(--nl-amber); animation:nl-pnl-breathe 1.6s ease-in-out infinite; }
+.nl-pnl-sending .nl-pnl-dot::after { animation:nl-pnl-ring 1.6s ease-out infinite; }
+@keyframes nl-pnl-breathe { 50% { transform:scale(1.18); } }
+@keyframes nl-pnl-ring { 0% { transform:scale(.6); opacity:.9; } 100% { transform:scale(2.6); opacity:0; } }
+.nl-pnl-shimmer { position:absolute; left:0; right:0; top:50%; height:1px; margin-top:-.5px; overflow:hidden; pointer-events:none; }
+.nl-pnl-shimmer::before { content:''; position:absolute; top:0; bottom:0; left:-35%; width:35%; background:linear-gradient(90deg, transparent, #fea911cc 50%, transparent); animation:nl-pnl-shimmer 1.8s linear infinite; }
+@keyframes nl-pnl-shimmer { to { left:100%; } }
+.nl-pnl-call,.nl-pnl-wait { position:absolute; inset:0; }
+.nl-pnl-call[data-leaving] { pointer-events:none; animation:nl-pnl-fade-out var(--nl-fade, 320ms) ease forwards; }
+.nl-pnl-wait { display:flex; align-items:center; justify-content:center; pointer-events:none; animation:nl-pnl-fade-in var(--nl-fade, 320ms) ease both; }
+@keyframes nl-pnl-fade-in { from { opacity:0; } }
+@keyframes nl-pnl-fade-out { to { opacity:0; } }
+.nl-pnl-hint { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; margin:0; pointer-events:none; color:#9d968a; font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:18px; font-weight:600; letter-spacing:-.2px; }
+.nl-pnl-progress { display:flex; flex-direction:column; align-items:center; gap:10px; transform:translateY(-34px); }
+.nl-pnl-steps { display:grid; margin:0; padding:9px 18px; list-style:none; border:1px solid var(--nl-border); border-radius:999px; background:#111210d9; font-size:11px; letter-spacing:1.2px; text-transform:uppercase; color:#6f6a5f; text-align:center; }
+.nl-pnl-steps li { grid-area:1 / 1; opacity:0; transition:opacity 420ms ease; }
+.nl-pnl-steps li.active { color:var(--nl-amber); opacity:1; }
+.nl-pnl-step-dots { display:flex; gap:6px; }
+.nl-pnl-step-dots i { width:5px; height:5px; border-radius:50%; background:#ffedcd24; transition:background 420ms ease; }
+.nl-pnl-step-dots i.lit { background:var(--nl-amber); }
+.nl-pnl-stalled { padding:9px 18px; border:1px solid #fea91133; border-radius:999px; background:#111210d9; color:var(--nl-amber); font-size:11px; letter-spacing:1.2px; text-transform:uppercase; transform:translateY(-34px); }
+/* Opening progress ("Filled 40%") and the small Cancel link stack under the steps; only the link takes clicks. */
+.nl-pnl-wait { flex-direction:column; gap:8px; }
+.nl-pnl-fill-progress { font-size:11px; letter-spacing:1.2px; text-transform:uppercase; color:var(--nl-amber); transform:translateY(-34px); }
+.nl-pnl-cancel { pointer-events:auto; appearance:none; border:0; background:none; padding:4px 10px; font:inherit; font-size:11px; letter-spacing:1.2px; text-transform:uppercase; color:#6f6a5f; text-decoration:underline; text-underline-offset:3px; cursor:pointer; transform:translateY(-34px); }
+.nl-pnl-cancel:hover,.nl-pnl-cancel:focus-visible { color:var(--nl-amber); }
+
+/* ---- Idle call-to-action (over the empty plot) ------------------------------------------------------------------
+   The call is the whole point of the screen, so while nothing is in play the chart card carries it at full size: two
+   paddles and the stake / length they will use. No wallet: one connect button. No usable balance: the deposit flow. */
+.nl-chart-cta { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:8px 6%; text-align:center; }
+/* A soft pool of the card colour behind the call lifts it off the grid and the dashed zero line. */
+.nl-chart-cta::before { content:''; position:absolute; inset:10% 8%; z-index:-1; border-radius:50%; background:radial-gradient(closest-side, #171815 55%, #17181500); }
+.nl-chart-cta { isolation:isolate; }
+.nl-chart-cta > * { position:relative; }
+.nl-chart-cta h2 { margin:0; font-size:clamp(24px, 2.4vw, 32px); font-weight:700; letter-spacing:-.8px; line-height:1.1; }
+.nl-chart-cta p { margin:0; max-width:40ch; color:#b7b0a3; font-size:14px; line-height:1.5; }
+.nl-chart-cta .nl-chart-cta-note { color:var(--nl-amber); }
+.nl-chart-cta .nl-button { height:56px; min-height:0; padding:0 26px; border-radius:var(--pp-radius); font-size:15px; font-weight:600; gap:9px; }
+.nl-chart-cta .nl-chart-directions { width:min(620px, 100%); margin:0; padding:0; gap:16px; }
+.nl-chart-cta .nl-chart-directions button { height:clamp(72px, 10vw, 104px); }
+.nl-chart-cta .nl-chart-directions span { font-size:clamp(24px, 2.4vw, 32px); }
+.nl-chart-cta-summary { color:var(--nl-muted); font-size:14px; font-variant-numeric:tabular-nums; }
+.nl-chart-cta-summary b { color:var(--nl-cream); font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:18px; font-weight:650; letter-spacing:-.2px; }
+
+/* ---- Up / Down ---------------------------------------------------------------------------------------------------
+   The decision. Solid, equal, 64px in the panel and taller over the chart. One rule set for both places. */
+.nl-game-shell .nl-direction-buttons { display:flex; gap:12px; }
+.nl-game-shell .nl-direction-buttons button { flex:1 1 0; display:flex; align-items:center; justify-content:center; gap:8px; height:64px; padding:0 8px; border:0; border-radius:var(--pp-radius); font-family:'Bricolage Grotesque',Rubik,sans-serif; box-shadow:inset 0 1px 0 #ffffff33,inset 0 -3px 0 #0000002e; transition:background var(--pp-ease),box-shadow var(--pp-ease),transform var(--pp-ease),filter var(--pp-ease),opacity var(--pp-ease); }
+.nl-game-shell .nl-direction-buttons .nl-up { background:var(--pp-up); color:#062413; }
+.nl-game-shell .nl-direction-buttons .nl-down { background:var(--pp-down); color:#2b0609; }
+.nl-game-shell .nl-direction-buttons button:hover:enabled { transform:translateY(-1px); filter:brightness(1.07); box-shadow:inset 0 1px 0 #ffffff59,inset 0 0 0 1px #ffffff26,inset 0 -3px 0 #0000002e,0 10px 22px -8px #000c; }
+.nl-game-shell .nl-direction-buttons button:active:enabled { transform:translateY(0); filter:brightness(.97); }
+.nl-game-shell .nl-direction-buttons button:disabled { opacity:.45; transform:none; filter:none; cursor:not-allowed; }
+.nl-game-shell .nl-direction-buttons button:focus-visible { outline:2px solid var(--nl-amber); outline-offset:3px; }
+.nl-game-shell .nl-direction-buttons span { font-size:22px; font-weight:700; line-height:1; letter-spacing:-.2px; }
+
+/* ---- Play panel ("YOUR CALL") ------------------------------------------------------------------------------------
+   The primary control surface: 12px radii, 1px borders, 48px segmented controls, 64px direction buttons, label rows
+   that read "label left, value right" on one line, and a 14px rhythm between groups (6-8px inside a group). */
+.nl-game-shell .nl-play-panel { padding:20px 22px 0; font-variant-numeric:tabular-nums; }
+.nl-game-shell .nl-card-heading { margin-bottom:6px; flex-shrink:0; }
+.nl-play-panel :is(button,input,a):focus-visible { outline:2px solid var(--nl-amber); outline-offset:2px; }
+.nl-play-panel button { transition:background var(--pp-ease),border-color var(--pp-ease),color var(--pp-ease),box-shadow var(--pp-ease),transform var(--pp-ease),filter var(--pp-ease),opacity var(--pp-ease); }
+
+/* Fixed region: idle form and active round swap inside it. Its minimum fits the tallest state, so neither state grows the panel. */
+.nl-play-body { --nl-play-min:476px; container-type:size; flex:1 1 0; min-height:var(--nl-play-min); display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; margin:0 -6px; padding:0 6px 14px; }
+
+/* Label rows: one line, label left, value right. */
+.nl-play-panel .nl-field-label { display:flex; justify-content:space-between; align-items:center; gap:10px; height:20px; margin:var(--pp-gap) 0 8px; font-size:13px; font-weight:500; color:#d8d2c6; white-space:nowrap; }
+.nl-play-panel .nl-field-label > svg { color:var(--nl-muted); }
+.nl-play-panel .nl-field-value { display:inline-flex; align-items:center; gap:8px; font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:18px; font-weight:650; color:var(--nl-cream); letter-spacing:-.2px; }
+
+/* Idle form. */
+.nl-entry { flex:1 0 auto; display:flex; flex-direction:column; }
+.nl-entry > .nl-field-label:first-child { margin-top:6px; }
+/* Taller panels (1080p and up) open the group gaps a little (up to 30px), and the rest of the spare height sits above Up / Down. */
+.nl-entry > .nl-field-label:not(:first-child) { margin-top:clamp(var(--pp-gap), calc((100cqh - var(--nl-play-min)) / 6 + var(--pp-gap)), 30px); }
+
+/* Amount: big number with "$" and "USDC" on its baseline; Max sits inside as a quiet chip. */
+.nl-play-panel .nl-amount-input { display:flex; align-items:center; gap:10px; height:68px; box-sizing:border-box; padding:0 12px 0 16px; background:var(--pp-surface); border:1px solid var(--pp-line-strong); border-radius:var(--pp-radius); transition:border-color var(--pp-ease),box-shadow var(--pp-ease); }
+.nl-play-panel .nl-amount-input:hover:not(:has(input:disabled)) { border-color:#ffedcd38; }
+.nl-play-panel .nl-amount-input:focus-within { border-color:var(--nl-amber); box-shadow:0 0 0 3px #fea9111f; }
+.nl-play-panel .nl-amount-input:has(input[aria-invalid=true]) { border-color:#f4ad8666; }
+.nl-play-panel .nl-amount-field { flex:1 1 auto; min-width:0; display:flex; align-items:baseline; gap:6px; }
+.nl-play-panel .nl-amount-currency { font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:28px; font-weight:600; color:#7d776b; line-height:1; }
+.nl-play-panel .nl-amount-input input { flex:1 1 auto; width:100%; min-width:0; padding:0; background:none; border:0; outline:none; color:var(--nl-cream); font-family:'Bricolage Grotesque',Rubik,sans-serif; height:44px; font-size:40px; font-weight:650; line-height:44px; letter-spacing:-1px; font-variant-numeric:tabular-nums; -moz-appearance:textfield; }
+.nl-play-panel .nl-amount-input input::-webkit-inner-spin-button,.nl-play-panel .nl-amount-input input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+.nl-play-panel .nl-amount-input input:disabled { color:#ffedcd99; cursor:not-allowed; }
+.nl-play-panel .nl-amount-input .nl-amount-max { flex:0 0 auto; height:30px; padding:0 12px; border:1px solid var(--pp-line-strong); border-radius:8px; background:transparent; color:#c9c1b1; font-size:12px; font-weight:600; letter-spacing:.3px; }
+.nl-play-panel .nl-amount-input .nl-amount-max:hover:not(:disabled) { color:var(--nl-amber); border-color:#fea91166; background:#fea91110; }
+.nl-play-panel .nl-amount-input b { flex:0 0 auto; line-height:1; color:var(--nl-muted); font-size:11px; font-weight:500; letter-spacing:.4px; }
+
+/* Stake slider: the whole usable balance, left to right; the filled part is the share about to be played. */
+.nl-stake-slider { --nl-share:0%; display:flex; align-items:center; height:32px; margin-top:8px; padding:0 2px; }
+.nl-stake-slider input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:32px; margin:0; background:transparent; cursor:pointer; }
+.nl-stake-slider input[type=range]:disabled { cursor:not-allowed; opacity:.4; }
+.nl-stake-slider input[type=range]::-webkit-slider-runnable-track { height:6px; border-radius:3px; background:linear-gradient(90deg, var(--nl-amber) var(--nl-share), #ffedcd1f var(--nl-share)); }
+.nl-stake-slider input[type=range]::-moz-range-track { height:6px; border-radius:3px; background:#ffedcd1f; }
+.nl-stake-slider input[type=range]::-moz-range-progress { height:6px; border-radius:3px; background:var(--nl-amber); }
+.nl-stake-slider input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:22px; height:22px; margin-top:-8px; border:3px solid #111310; border-radius:50%; background:var(--nl-cream); box-shadow:0 0 0 1px #fea91180, 0 4px 10px -2px #000c; transition:transform var(--pp-ease); }
+.nl-stake-slider input[type=range]::-moz-range-thumb { width:16px; height:16px; border:3px solid #111310; border-radius:50%; background:var(--nl-cream); box-shadow:0 0 0 1px #fea91180, 0 4px 10px -2px #000c; }
+.nl-stake-slider input[type=range]:hover:enabled::-webkit-slider-thumb,.nl-stake-slider input[type=range]:focus-visible::-webkit-slider-thumb { transform:scale(1.12); }
+.nl-stake-slider input[type=range]:focus-visible { outline:none; }
+.nl-stake-slider input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow:0 0 0 3px var(--nl-amber); }
+
+/* Segmented rows: stake shares and duration share one shape and height. */
+.nl-play-panel :is(.nl-amount-presets,.nl-duration) { display:flex; gap:4px; height:var(--pp-seg); box-sizing:border-box; padding:4px; background:var(--pp-surface); border:1px solid var(--pp-line); border-radius:var(--pp-radius); }
+.nl-play-panel .nl-amount-presets { margin-top:4px; }
+.nl-play-panel :is(.nl-amount-presets,.nl-duration) button { flex:1 1 0; min-width:0; padding:0; border:0; border-radius:9px; background:transparent; color:#aaa497; font-size:14px; font-weight:500; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.nl-play-panel :is(.nl-amount-presets,.nl-duration) button:hover:not(:disabled):not(.selected) { background:#ffedcd0d; color:var(--nl-cream); }
+.nl-play-panel :is(.nl-amount-presets,.nl-duration) button:disabled { opacity:.4; cursor:not-allowed; }
+.nl-play-panel .nl-amount-presets button.selected { background:#fea9111c; color:var(--nl-amber); box-shadow:inset 0 0 0 1px #fea91159; }
+.nl-play-panel .nl-duration button.selected { background:#383226; color:var(--nl-cream); box-shadow:inset 0 0 0 1px #fea91166; }
+.nl-play-panel .nl-available { display:flex; justify-content:space-between; gap:12px; margin:8px 0 0; font-size:12px; line-height:16px; color:var(--nl-muted); white-space:nowrap; }
+.nl-play-panel .nl-available b { color:var(--nl-cream); font-weight:600; overflow:hidden; text-overflow:ellipsis; }
+.nl-play-panel .nl-min-stake { color:#7d776b; }
+.nl-play-panel .nl-min-stake-hit { color:#f4ad86; }
+
+/* Up / Down in the panel: pinned to the bottom of the form. */
+.nl-play-panel .nl-direction-buttons { margin-top:auto; padding-top:var(--pp-gap); }
+.nl-play-panel .nl-panel-deposit { height:52px; margin-top:var(--pp-gap); border-radius:var(--pp-radius); font-size:14px; font-weight:600; }
+.nl-play-panel .nl-connect-hint { margin:10px 0 0; font-size:12px; line-height:16px; color:var(--nl-muted); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* Messages inside the fixed region. */
+.nl-play-panel .nl-fineprint { margin:10px 0 0; color:#898477; font-size:10px; line-height:15px; }
+.nl-play-panel .nl-field-error { margin:10px 0 0; color:#f4ad86; font-size:12px; line-height:16px; }
+.nl-play-panel .nl-play-body > .nl-error { margin:10px 0 0; }
+.nl-play-panel .nl-service-offline { margin:10px 0 0; color:var(--nl-red); font-size:11px; text-align:center; }
+
+/* Active round: hero (your call, countdown, progress, time row), result card, close. Spread evenly over the fixed region. */
+.nl-game-shell .nl-active-round { flex:1 0 auto; display:flex; flex-direction:column; justify-content:space-between; gap:var(--pp-gap); padding-top:clamp(8px, calc((100cqh - var(--nl-play-min)) / 4), 56px); text-align:center; }
+.nl-active-hero { display:flex; flex-direction:column; }
+.nl-active-head { display:flex; align-items:center; justify-content:center; gap:9px; height:32px; }
+.nl-play-panel .nl-active-head h2 { margin:0; font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:24px; font-weight:650; line-height:28px; letter-spacing:-.3px; }
+.nl-active-direction { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:9px; background:#ffedcd0f; }
+.nl-active-direction.nl-positive { background:#2fbf711f; }
+.nl-active-direction.nl-negative { background:#e5484d1f; }
+.nl-active-direction svg { display:block; width:20px; height:20px; }
+.nl-play-panel .nl-countdown { margin:14px 0 12px; font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:clamp(76px, calc(76px + (100cqh - var(--nl-play-min)) / 8), 100px); font-weight:650; line-height:1; letter-spacing:-2px; color:var(--nl-cream); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.nl-countdown .nl-unit { margin-left:2px; font-size:.42em; font-weight:600; letter-spacing:0; color:#ffedcd99; }
+.nl-play-panel .nl-active-round progress { -webkit-appearance:none; appearance:none; display:block; width:100%; height:8px; border:0; border-radius:4px; overflow:hidden; background:#ffedcd17; color:var(--nl-amber); }
+.nl-play-panel .nl-active-round progress::-webkit-progress-bar { background:#ffedcd17; border-radius:4px; }
+.nl-play-panel .nl-active-round progress::-webkit-progress-value { background:var(--nl-amber); border-radius:4px; transition:width .2s linear; }
+.nl-play-panel .nl-active-round progress::-moz-progress-bar { background:var(--nl-amber); border-radius:4px; }
+/* Under the bar: the state caption, centred like the head and timer. */
+.nl-countdown-meta { display:flex; align-items:center; justify-content:center; height:24px; margin-top:8px; }
+.nl-countdown-meta small { font-size:11px; font-weight:500; letter-spacing:1.6px; color:var(--nl-muted); white-space:nowrap; }
+
+/* Round controls: one block right under the timer for the whole round. Add time (four big chips with an end-time
+   preview), then the full-width Close round early. Nothing here waits for the last minute. */
+.nl-round-controls { display:flex; flex-direction:column; gap:10px; padding:12px; background:var(--pp-surface); border:1px solid var(--pp-line); border-radius:var(--pp-radius); text-align:left; }
+.nl-play-panel .nl-extension { display:flex; flex-direction:column; gap:8px; margin:0; }
+.nl-extension-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; min-height:18px; white-space:nowrap; }
+.nl-extension-label { font-size:13px; font-weight:500; color:#d8d2c6; }
+.nl-extension-hint { overflow:hidden; text-overflow:ellipsis; font-size:11px; line-height:18px; color:var(--nl-muted); font-variant-numeric:tabular-nums; }
+.nl-extension-hint.nl-extension-pending { color:var(--nl-amber); }
+.nl-play-panel .nl-extension-chips { height:auto; padding:0; gap:6px; background:none; border:0; }
+.nl-play-panel .nl-extension .nl-extension-chips button { height:48px; border:1px solid #fea91159; border-radius:10px; background:#fea91112; color:var(--nl-amber); font-size:15px; font-weight:600; transition:background var(--pp-ease),border-color var(--pp-ease); }
+.nl-play-panel .nl-extension .nl-extension-chips button:hover:enabled,.nl-play-panel .nl-extension .nl-extension-chips button:focus-visible { border-color:var(--nl-amber); background:#fea91124; color:var(--nl-cream); }
+.nl-play-panel .nl-extension .nl-extension-chips button[aria-busy=true] { background:#fea91124; border-color:var(--nl-amber); color:var(--nl-cream); }
+.nl-round-controls .nl-error { margin:0; }
+
+/* Result card: label row (caption on the right), the live number, then the bet as one line. */
+.nl-result-card { padding:16px 18px; background:var(--pp-surface); border:1px solid var(--pp-line); border-radius:var(--pp-radius); text-align:left; }
+.nl-play-panel .nl-live-pnl { display:grid; grid-template-columns:auto 1fr; align-items:baseline; column-gap:12px; margin:0; padding:0; background:none; border:0; }
+.nl-play-panel .nl-live-pnl .nl-label { grid-column:1; grid-row:1; margin:0; font-size:13px; font-weight:500; color:#d8d2c6; letter-spacing:0; white-space:nowrap; }
+.nl-play-panel .nl-result-caption { grid-column:2; grid-row:1; justify-self:end; font-size:10px; line-height:16px; color:var(--nl-muted); white-space:nowrap; }
+.nl-play-panel .nl-live-pnl > strong { grid-column:1 / -1; grid-row:2; display:block; margin-top:6px; font-family:'Bricolage Grotesque',Rubik,sans-serif; font-size:clamp(40px, calc(40px + (100cqh - var(--nl-play-min)) / 24), 52px); font-weight:650; line-height:1.15; letter-spacing:-1.2px; color:var(--nl-cream); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.nl-play-panel .nl-result-status { grid-column:1 / -1; grid-row:3; margin:2px 0 0; font-size:11px; line-height:16px; color:var(--nl-muted); }
+.nl-play-panel .nl-details { display:block; margin:12px 0 0; padding:12px 0 0; border:0; border-top:1px solid var(--pp-line); }
+.nl-play-panel .nl-details > div { display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:13px; white-space:nowrap; }
+.nl-play-panel .nl-details dt { color:var(--nl-muted); }
+.nl-play-panel .nl-details dd { margin:0; color:var(--nl-cream); font-weight:600; font-size:15px; font-variant-numeric:tabular-nums; }
+.nl-play-panel .nl-active-round > .nl-error { margin:0; text-align:left; }
+
+/* Close early: full width, 56px, cream on dark with an amber edge so it reads as a button. No confirmation; a short "Closing…" state instead. */
+.nl-game-shell .nl-play-panel .nl-close-early { display:flex; width:100%; height:56px; min-height:56px; padding:0 16px; border:1px solid #fea91166; border-radius:var(--pp-radius); background:#fea91114; color:var(--nl-cream); font-size:15px; font-weight:600; letter-spacing:-.1px; }
+.nl-game-shell .nl-play-panel .nl-close-early:hover:enabled { background:#fea91128; border-color:var(--nl-amber); }
+.nl-game-shell .nl-play-panel .nl-close-early[aria-busy=true] { color:var(--nl-amber); }
+
+/* Both panels end in a footer of the same height, padding, border and type, pinned to the panel bottom; the panels are
+   equal height, so the two footers' top borders and bottom edges line up. */
+.nl-game-shell .nl-panel-footer { flex-shrink:0; box-sizing:border-box; height:51px; margin:auto 0 0; padding:16px 22px; background:none; border:0; border-top:1px solid #ffedcd14; font-size:12px; line-height:18px; }
+.nl-game-shell .nl-round-strip.nl-panel-footer svg { flex-shrink:0; width:18px; height:18px; }
+/* The last round is always the play panel's footer; it spans the panel's padding. */
+.nl-game-shell .nl-play-panel > .nl-last-strip { margin:auto -22px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+/* "Last round · Called ↗ · +$0.82" on one centred line. */
+.nl-last-strip { color:var(--nl-muted); text-align:center; font-variant-numeric:tabular-nums; }
+.nl-last-strip b { color:var(--nl-cream); font-weight:500; }
+.nl-last-strip .nl-last-direction { display:inline-block; margin:0 1px 0 3px; vertical-align:-2px; color:var(--nl-cream); }
+
+/* The shell's bottom padding stays trimmed (28px -> 14px) so 1440 x 900 fits the idle form without inner scrolling. */
+@media (min-width:761px) {
+  .nl-game-shell { padding-bottom:14px; }
+}
+@media (max-width:1100px) {
+  .nl-game-shell .nl-play-panel { padding:18px 18px 0; }
+  .nl-game-shell .nl-play-panel > .nl-last-strip { margin:auto -18px 0; }
+  .nl-side-column { gap:15px; }
+  .nl-cat-panel { height:200px; }
+  .nl-game-shell .nl-chart-toolbar { margin:0 18px; }
+}
+@media (max-width:760px) {
+  .nl-game-shell { min-height:0; }
+  .nl-game-heading { min-height:62px; margin-bottom:22px; }
+  .nl-game-heading h1 { font-size:32px; }
+  /* Phones: one column with the controls first, then the chart, then Cato's room. */
+  .nl-side-column { display:contents; }
+  .nl-game-grid > .nl-side-column > .nl-play-panel { order:-1; }
+  .nl-game-grid > .nl-side-column > .nl-cat-panel { order:1; }
+  .nl-chart-area { min-height:300px; }
+  .nl-pnl-chart { padding:0 7px; }
+  .nl-pnl-plot { min-height:200px; }
+  .nl-chart-cta { padding:8px 4%; gap:12px; }
+  .nl-chart-cta .nl-chart-directions { gap:10px; }
+  .nl-chart-cta .nl-chart-directions button { height:72px; }
+  .nl-chart-cta .nl-chart-directions span { font-size:22px; }
+  .nl-chart-cta p { font-size:13px; }
+  .nl-cat-panel { height:180px; }
+  .nl-game-shell .nl-play-panel { padding:20px 18px 0; }
+  .nl-game-shell .nl-chart-toolbar { margin:0 16px; flex-wrap:wrap; gap:8px 12px; }
+  .nl-game-shell .nl-play-panel .nl-direction-buttons { margin-top:var(--pp-gap); }
+  /* Phones: stake shares and durations become separate 48px pills (full-height tap targets, no inset track). */
+  .nl-play-panel :is(.nl-amount-presets,.nl-duration) { height:auto; padding:0; gap:6px; background:none; border:0; }
+  .nl-play-panel :is(.nl-amount-presets,.nl-duration) button { height:var(--pp-seg); border:1px solid var(--pp-line); border-radius:10px; background:var(--pp-surface); }
+  .nl-play-panel .nl-amount-presets button { font-size:13px; }
+  .nl-play-panel .nl-countdown { font-size:72px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .nl-pnl-chart { --nl-fade:0ms; }
+  .nl-pnl-sending .nl-pnl-dot,.nl-pnl-sending .nl-pnl-dot::after,.nl-pnl-shimmer::before,.nl-pnl-call[data-leaving],.nl-pnl-wait { animation:none; }
+  /* The break-even cross still registers, as a steady tint instead of a pulse. */
+  .nl-pnl-zero-cross { animation:none; stroke:var(--nl-green); }
+  .nl-pnl-lead,.nl-pnl-steps li,.nl-pnl-step-dots i,.nl-pnl-fee { transition:none; }
+  .nl-stake-slider input[type=range]::-webkit-slider-thumb { transition:none; }
+}

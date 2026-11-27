@@ -1,0 +1,44 @@
+.nl-live-round { display:flex; align-items:center; gap:22px; padding:16px 22px; margin-bottom:23px; background:#1b1c18; border:1px solid #fea91133; border-radius:14px; white-space:nowrap; }
+.nl-live-round-market { display:flex; align-items:center; gap:9px; flex-shrink:0; }
+.nl-live-round-market .nl-coin { width:26px; height:26px; font-size:10px; }
+.nl-live-round-market strong { color:var(--nl-cream); font-size:15px; font-weight:600; }
+.nl-live-round-call { font-size:13px; font-weight:500; }
+.nl-live-round-stats { display:flex; align-items:center; flex:1; min-width:0; margin:0; overflow-x:auto; scrollbar-width:none; }
+.nl-live-round-stats::-webkit-scrollbar { display:none; }
+.nl-live-round-stats > div { display:flex; align-items:baseline; gap:7px; padding:0 16px; border-left:1px solid #ffedcd14; flex-shrink:0; }
+.nl-live-round-stats > div:first-child { padding-left:0; border-left:0; }
+.nl-live-round-stats dt { color:var(--nl-muted); font-size:11px; }
+.nl-live-round-stats dd { margin:0; color:var(--nl-cream); font-size:13px; font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:6px; }
+.nl-live-round-result dd b { font-family:'Bricolage Grotesque',sans-serif; font-size:22px; font-weight:600; line-height:1; color:var(--nl-cream); }
+.nl-live-round-result dd small { color:var(--nl-muted); font-size:10px; }
+.nl-live-round-opening { flex:1; margin:0; color:#d8d2c6; font-size:13px; }
+.nl-live-round-link { color:#fea911; font-size:12px; font-weight:500; line-height:1; text-decoration:none; flex-shrink:0; }
+.nl-live-round-link:hover { color:#ffbd44; }
+/* Right cluster: link · clock · bar · pill on one centred line. */
+.nl-live-round-timer { display:flex; align-items:center; gap:14px; flex-shrink:0; }
+.nl-live-round-clock { display:inline-flex; align-items:center; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:600; line-height:1; color:var(--nl-cream); font-variant-numeric:tabular-nums; }
+.nl-live-round-bar { display:block; flex-shrink:0; width:90px; height:3px; border-radius:3px; background:#ffedcd1a; overflow:hidden; }
+.nl-live-round-bar i { display:block; height:100%; border-radius:3px; background:var(--nl-amber); transition:width .25s linear; }
+.nl-live-round-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #ffedcd1f; border-radius:999px; background:#ffedcd0a; color:var(--nl-muted); font-size:10px; line-height:1; letter-spacing:.4px; }
+.nl-live-round-pill i { width:5px; height:5px; border-radius:50%; background:currentColor; }
+.nl-live-round-pill-live { border-color:#81dab233; background:#81dab212; color:#81dab2; }
+.nl-live-round-pill-live i { box-shadow:0 0 0 3px #81dab222; }
+.nl-live-round-pill-closing { border-color:#fea91140; background:#fea9110d; color:var(--nl-amber); }
+.nl-live-round-pill-closing i { box-shadow:0 0 0 3px #fea91122; }
+@media (max-width:760px) {
+  /* Row 1: market + countdown. Row 2: stats (scroll sideways) + game link. */
+  .nl-live-round { flex-wrap:wrap; gap:6px 14px; padding:14px; }
+  .nl-live-round::after { content:''; order:2; flex-basis:100%; height:0; }
+  .nl-live-round-market { order:1; }
+  /* Let the cluster's pieces join the card's rows: countdown stays on row 1, the link drops to row 2. */
+  .nl-live-round-timer { display:contents; }
+  .nl-live-round-clock,.nl-live-round-bar,.nl-live-round-pill { order:1; }
+  .nl-live-round-timer > :nth-child(2) { margin-left:auto; }
+  .nl-live-round-bar { width:56px; }
+  .nl-live-round-stats,.nl-live-round-opening { order:3; flex:1 1 0; min-width:0; }
+  .nl-live-round-link { order:4; }
+  /* The result matters most; lead the scrolling row with it. */
+  .nl-live-round-stats > .nl-live-round-result { order:-1; padding-left:0; border-left:0; }
+  .nl-live-round-stats > div:first-child { padding-left:16px; border-left:1px solid #ffedcd14; }
+  .nl-live-round-result dd b { font-size:19px; }
+}

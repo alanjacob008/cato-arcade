@@ -1,0 +1,8 @@
+.shell { --font-cato-body: var(--font-brand); --font-cato-display: var(--font-display); font-family: var(--font-brand), sans-serif; -webkit-font-smoothing: antialiased; }
+:where(.shell, .shell *, .shell *::before, .shell *::after) { box-sizing: border-box; }
+:where(.shell) :where(h1,h2,h3,h4,h5,h6,p,dl) { margin: 0; }
+:where(.shell) :where(button,input,select,textarea) { font: inherit; }
+:where(.shell) :where(button) { border: 0; }
+:where(.shell) :where(svg) { display: inline-block; vertical-align: middle; }
+:where(.shell) :where(img,canvas) { display: block; }
+:where(.shell) :where(a) { color: inherit; }

@@ -1,0 +1,455 @@
+/* Home: the arcade hero and "How a grab is drawn". Palette and motion follow
+   docs/claw/plans/2026-11-27-blitz-ui-direction.md: amber is the arcade, teal (--proof) is the chain. */
+
+.hero,
+.drawn {
+  --night: #0B0A09;
+  --deck: #1A1714;
+  --deck-edge: #2B2621;
+  --amber: #FEA911;
+  --ember: #D3601E;
+  --cream: #FFEDCD;
+  --espresso: #1C0D00;
+  --proof: #4FE3C1;
+  --muted: #A8A096;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --ease-enter: cubic-bezier(.22, 1, .36, 1);
+  --ease-io: cubic-bezier(.65, 0, .35, 1);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: calc(100svh - var(--site-header-h, 64px));
+  min-height: 520px;
+  background: var(--night);
+  color: var(--cream);
+}
+
+.heroPush {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  z-index: -2;
+  transform-origin: 72.7% 44.4%;
+  transition: transform .7s var(--ease-io);
+  will-change: transform;
+}
+.heroSettle {
+  position: absolute;
+  inset: 0;
+  transform-origin: 75% 0;
+  transform: scale(.9);
+}
+.heroSettle[data-ready] { animation: settle 5.8s var(--ease-enter) .2s both; }
+.hero[data-entering="true"] .heroSettle { animation-play-state: paused; }
+.heroImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keep the machine's bulbs visible as the photo is framed for the screen. */
+  object-position: 66% 0%;
+  display: block;
+}
+/* A fixed source-height crop keeps the same cabinet landmarks in view on a
+   short browser panel and a tall monitor throughout the camera approach. */
+@media (min-aspect-ratio: 4/5) {
+  .heroImg {
+    --hero-art-h: calc(100cqh / .786);
+    inset: auto;
+    top: 0;
+    left: calc(75cqw - var(--hero-art-h) * 16 / 9 * .727);
+    width: calc(var(--hero-art-h) * 16 / 9);
+    height: var(--hero-art-h);
+    object-fit: contain;
+    object-position: 50% 0;
+  }
+}
+/* Color-only finishes over the same high-resolution still. */
+.heroSettle { isolation: isolate; }
+.finishWash { position: absolute; overflow: hidden; pointer-events: none; mix-blend-mode: color; opacity: 0; transition: opacity .9s ease-in-out; }
+.finishWash[data-visible] { opacity: 1; }
+.finishWash svg { position: absolute; }
+.finishWash rect { opacity: 0; transition: opacity .9s ease-in-out; }
+.finishWash[data-finish="silver"] .finishSilver,
+.finishWash[data-finish="gold"] .finishGold,
+.finishWash[data-finish="diamond"] .finishDiamond { opacity: 1; }
+.finishControls {
+  position: absolute; right: var(--site-gutter, 24px); bottom: 24px; z-index: 2;
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  background: #0b0a09c9; border: 1px solid #ffedcd26; border-radius: 4px;
+  color: #d9cfbf; cursor: pointer;
+}
+.finishControls:hover { background: #ffedcd12; }
+.finishControls:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.finishControls[hidden] { display: none; }
+@media (max-aspect-ratio: 4/5) {
+  .finishControls { right: 16px; bottom: 10px; }
+  .hero:has(.finishControls) .heroBottom { padding-bottom: 68px; }
+}
+@media (prefers-reduced-motion: reduce) { .finishWash, .finishWash rect { transition: none; } }
+
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgb(11 10 9 / .86) 0%, rgb(11 10 9 / .62) 28%, rgb(11 10 9 / .18) 50%, rgb(11 10 9 / 0) 62%),
+    linear-gradient(0deg, rgb(11 10 9 / .55) 0%, rgb(11 10 9 / 0) 24%);
+  transition: opacity .5s var(--ease);
+}
+
+/* The site's one content edge (app/globals.css: --site-max, --site-gutter), the staking panel's own. */
+.heroWrap {
+  position: relative;
+  width: min(var(--site-max, 1400px), 100%);
+  height: 100%;
+  margin-inline: auto;
+  padding: clamp(40px, 7.2vh, 64px) var(--site-gutter, 24px) clamp(40px, 8vh, 72px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 36px;
+  transition: opacity .25s var(--ease), transform .35s var(--ease);
+}
+.heroTop,
+.heroBottom { max-width: 560px; }
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-display), var(--font-brand), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(56px, 8.6vw, 132px);
+  line-height: .94;
+  letter-spacing: -0.045em;
+  color: #FFF6E6;
+  text-wrap: balance;
+}
+.amber {
+  color: var(--amber);
+  text-shadow: 0 0 28px rgb(254 169 17 / .35);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+/* The h1's second line names what it is: the category, in the body face under the name. */
+.titleKind {
+  display: block;
+  margin-top: clamp(14px, 1.5vw, 22px);
+  font-family: var(--font-brand), system-ui, sans-serif;
+  font-size: clamp(19px, 1.75vw, 26px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  color: var(--cream);
+}
+/* The h1 rises word by word out of its masks, once. */
+.word {
+  display: inline-block;
+  vertical-align: bottom;
+  /* the mask clips only below the line, so the amber glow is never boxed in */
+  clip-path: inset(-1em -1em 0 -1em);
+  padding-bottom: .32em;
+  margin-bottom: -.32em;
+}
+.word > span {
+  display: inline-block;
+  animation: rise .7s var(--ease-enter) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+.heroLead {
+  margin: 12px 0 0;
+  max-width: 30em;
+  font-size: clamp(17px, 1.45vw, 21px);
+  line-height: 1.5;
+  color: #EFE4D2;
+  text-wrap: pretty;
+}
+.heroFact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #D9CFBF;
+}
+.liveDot {
+  position: relative;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px rgb(254 169 17 / .8);
+}
+
+.heroLead,
+.heroFact,
+.heroActions {
+  animation: fadeUp .52s var(--ease-enter) both;
+  animation-delay: calc(380ms + var(--i, 0) * 60ms);
+}
+
+.heroActions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-family: var(--font-brand), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform .12s var(--ease), background-color .12s var(--ease), border-color .12s var(--ease), box-shadow .12s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.btnPrimary {
+  background: var(--cream);
+  color: var(--espresso);
+  box-shadow: 0 10px 30px -12px rgb(254 169 17 / .55), inset 0 -2px 0 rgb(28 13 0 / .12);
+}
+.btnGhost {
+  color: var(--cream);
+  background: rgb(11 10 9 / .35);
+  border: 1px solid rgb(255 237 205 / .3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; transition: none; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-2px); transition-duration: .15s; }
+  .btnPrimary:hover { background: #F0D9B3; box-shadow: 0 14px 34px -12px rgb(254 169 17 / .7), inset 0 -2px 0 rgb(28 13 0 / .12); }
+  .btnGhost:hover { background: rgb(255 237 205 / .1); border-color: rgb(255 237 205 / .55); }
+}
+.btn:active { transform: translateY(1px) scale(.985); transition-duration: .09s; box-shadow: none; }
+
+/* Entering the arcade: the words step aside while the picture pushes in toward the glass. */
+.hero[data-entering="true"] .heroWrap { opacity: 0; transform: translateX(-16px); pointer-events: none; }
+.hero[data-entering="true"] .heroScrim { opacity: 0; }
+
+/* Portrait screens: the 9:16 still, the name above the machine, the actions on the floor below it.
+   Three rows: the name and lead, a band for the machine, the fact and the buttons. The picture sits in
+   the band (a size container) and is sized so the cabinet (56% of the frame's height, its centre at
+   58%) fills most of it, never past a full-bleed cover; above and below, the still's own wall and floor run on
+   under the copy and fade into the night. Pure CSS, so the first paint already has the final layout. */
+@media (max-aspect-ratio: 4/5) {
+  .hero {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    --hero-h: calc(100svh - var(--site-header-h, 64px));
+  }
+  .heroPush { position: relative; grid-row: 2; inset: auto; container-type: size; }
+  .heroImg {
+    /* The portrait artwork includes more wall: show its matching upper-machine
+       band, from the bulbs through the glass, instead of the payout pedestal. */
+    --art-h: calc(100cqh / .43);
+    inset: auto;
+    left: 50%;
+    top: calc(var(--art-h) * -.31);
+    width: calc(var(--art-h) * 9 / 16);
+    height: var(--art-h);
+    object-fit: contain;
+    object-position: 50% 0;
+    transform: translateX(-50%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 calc(var(--art-h) * .09), #000 calc(var(--art-h) * .84), transparent var(--art-h)), linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(180deg, transparent 0, #000 calc(var(--art-h) * .09), #000 calc(var(--art-h) * .84), transparent var(--art-h)), linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-composite: intersect;
+  }
+  .heroScrim { background: linear-gradient(180deg, rgb(11 10 9 / .7) 0%, rgb(11 10 9 / .3) 22%, rgb(11 10 9 / 0) 34%); }
+  .heroWrap { display: contents; }
+  .heroTop,
+  .heroBottom {
+    box-sizing: border-box;
+    width: min(var(--site-max, 1400px), 100%);
+    max-width: none;
+    margin-inline: auto;
+    padding-inline: var(--site-gutter, 16px);
+    transition: opacity .25s var(--ease), transform .35s var(--ease);
+  }
+  .heroTop { grid-row: 1; padding-top: 28px; }
+  .heroTop > * { max-width: 640px; }
+  /* the fact and the buttons stand on a calm, dark floor */
+  .heroBottom {
+    grid-row: 3;
+    padding-top: 22px;
+    padding-bottom: 40px;
+    background: linear-gradient(180deg, rgb(11 10 9 / 0), rgb(11 10 9 / .78) 30px);
+  }
+  .heroBottom > * { max-width: 640px; }
+  .heroLead { margin-top: 14px; }
+  .hero[data-entering="true"] .heroTop,
+  .hero[data-entering="true"] .heroBottom { opacity: 0; transform: translateX(-16px); pointer-events: none; }
+}
+@media (max-width: 639px) {
+  .heroTitle { font-size: clamp(48px, 14vw, 64px); }
+  .heroLead { font-size: 16px; line-height: 1.45; }
+  .heroFact { font-size: 14px; margin-bottom: 14px; }
+  .heroActions { flex-direction: column; gap: 10px; }
+  .btn { width: 100%; min-height: 50px; }
+}
+
+/* ---------- How a grab is drawn ---------- */
+
+.drawn {
+  position: relative;
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding: clamp(96px, 13.3vh, 120px) 0 clamp(48px, 9vh, 96px);
+  background:
+    radial-gradient(ellipse 50% 40% at 78% 52%, rgb(79 227 193 / .05), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 12% 0%, rgb(254 169 17 / .07), transparent 70%),
+    var(--night);
+  color: var(--cream);
+  scroll-margin-top: 0;
+}
+.drawnWrap {
+  box-sizing: border-box;
+  width: min(var(--site-max, 1400px), 100%);
+  margin-inline: auto;
+  padding-inline: var(--site-gutter, 24px);
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 4.5vw, 72px);
+  align-items: start;
+}
+.drawnTitle {
+  margin: 0;
+  font-family: var(--font-display), var(--font-brand), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 4.2vw, 60px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #FFF6E6;
+}
+.drawnLead {
+  margin: 20px 0 0;
+  max-width: 28em;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #E6DCCB;
+}
+.facts { list-style: none; margin: 36px 0 0; padding: 0; }
+.facts li { position: relative; padding: 18px 0; border-top: 1px solid var(--deck-edge); }
+/* a short teal segment on each rule: these are chain facts */
+.facts li::before { content: ""; position: absolute; top: -1px; left: 0; width: 28px; height: 1px; background: var(--proof); box-shadow: 0 0 8px rgb(79 227 193 / .7); }
+.facts li:last-child { border-bottom: 1px solid var(--deck-edge); }
+.facts h3 {
+  margin: 0;
+  font-family: var(--font-brand), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--cream);
+}
+.facts p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: var(--muted); }
+
+/* The diagram sits on the charcoal deck; its light is the proof teal. (.drawn raises it over the kit's own panel rule.) */
+.drawn .diagramPanel {
+  --p-h: clamp(560px, calc(100svh - 300px), 720px);
+  /* the kit's own panel rule, here too so the panel holds its height before diagram.css arrives */
+  min-height: max(var(--p-h), var(--dg-min, 0px));
+  align-self: stretch;
+}
+.diagramPanel {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgb(255 237 205 / .03), transparent 40%),
+    var(--deck);
+  border: 1px solid var(--deck-edge);
+  box-shadow: inset 0 1px 0 rgb(255 237 205 / .05), 0 30px 80px -40px rgb(0 0 0 / .8);
+  --ink: #FFEDCD;
+  /* captions and sub-lines: a lighter warm grey than the page's, so small type on the teal light keeps 7:1 */
+  --muted: #C9C0B2;
+  --accent: #4FE3C1;
+  --accent-ink: #0B0A09;
+  --card: #1A1714;
+  --frag: #24201C;
+  --dg-pulse: #4FE3C1;
+  --font-text: var(--font-brand), system-ui, sans-serif;
+}
+/* The kit lays the drawing out in a smaller box and it is scaled up to fill the panel: larger nodes and
+   labels, the same proportions. LanesDiagram.tsx sets --dg-k from the panel's width (1 on a phone). */
+.drawn .diagramPanel > :global(.dg) {
+  inset: 0 auto auto 0;
+  width: calc(100% / var(--dg-k, 1));
+  height: calc(100% / var(--dg-k, 1));
+  transform: scale(var(--dg-k, 1));
+  transform-origin: 0 0;
+}
+/* The kit's pause disc in the arcade's palette: dark glass, an amber glyph, a 44px target. */
+.drawn .diagramPanel :global(button.loop-pause.dg-pause) {
+  width: 44px;
+  height: 44px;
+  right: 14px;
+  bottom: 14px;
+  border: 1px solid rgb(254 169 17 / .34);
+  background: rgb(11 10 9 / .66);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--amber);
+  box-shadow: inset 0 1px 0 rgb(255 237 205 / .06), 0 8px 20px -10px rgb(0 0 0 / .9);
+  cursor: pointer;
+  transition: background-color .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease), transform .12s var(--ease);
+}
+.drawn .diagramPanel :global(button.loop-pause.dg-pause svg) { width: 16px; height: 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .drawn .diagramPanel :global(button.loop-pause.dg-pause:hover) { background: rgb(26 23 20 / .92); border-color: rgb(254 169 17 / .7); color: #FFC44D; }
+}
+.drawn .diagramPanel :global(button.loop-pause.dg-pause:active) { transform: translateY(1px) scale(.985); transition-duration: .09s; }
+.drawn .diagramPanel :global(button.loop-pause.dg-pause:focus-visible) { outline: 2px solid var(--amber); outline-offset: 2px; transition: none; }
+
+@media (max-width: 1023px) {
+  .drawnWrap { grid-template-columns: 1fr; gap: 32px; }
+  .drawn .diagramPanel { --p-h: 440px; }
+}
+@media (max-width: 639px) {
+  .drawn { padding-top: 48px; }
+  .drawnLead { font-size: 16px; }
+  .facts { margin-top: 24px; }
+  .facts li { padding: 14px 0; }
+  .facts p { font-size: 14px; }
+  .drawn .diagramPanel { --p-h: 380px; border-radius: 16px; }
+  /* a phone draws the lanes as icon tiles: their names a step larger, each on one line ("Lane 1", not "Lane / 1") */
+  .drawn .diagramPanel :global(.dg[data-tier="c"] .dg-cap) { font-size: 12.5px; line-height: 16px; }
+  .drawn .diagramPanel :global(.dg[data-tier="c"] .dg-cap:not(.dg-cap--in)) { white-space: nowrap; max-width: none; }
+}
+
+@keyframes rise { from { transform: translateY(140%); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } }
+@keyframes settle { from { transform: scale(.9); } to { transform: scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .heroSettle, .heroSettle[data-ready], .word > span, .heroLead, .heroFact, .heroActions { animation: none; }
+  .heroSettle { transform: none; }
+  .heroPush { transition: none; }
+  .heroWrap, .heroScrim { transition: opacity .2s linear; }
+  .hero[data-entering="true"] .heroWrap { transform: none; }
+  .btn, .btn:hover, .btn:active { transform: none; }
+}

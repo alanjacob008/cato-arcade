@@ -1,0 +1,21 @@
+{
+  "environment": "Node simulation/cache timings, not browser startup or FPS",
+  "measurements": [
+    {
+      "simulationMs": 1708,
+      "cacheRestoreMs": 1.01
+    },
+    {
+      "simulationMs": 2222,
+      "cacheRestoreMs": 2.44
+    },
+    {
+      "simulationMs": 1987,
+      "cacheRestoreMs": 0.69
+    }
+  ],
+  "textureBytes": {
+    "before": 2426059,
+    "after": 0
+  }
+}

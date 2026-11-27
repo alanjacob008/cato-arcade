@@ -1,0 +1,242 @@
+/*
+ * On-brand overrides for third-party UI the SDK renders outside our layout.
+ *
+ * Solana wallet-adapter modal: @orderly.network/wallet-connector imports
+ * @solana/wallet-adapter-react-ui/styles.css from a lazily loaded chunk, so
+ * that sheet is injected AFTER this one. Every rule below is therefore scoped
+ * under the modal root (`.wallet-adapter-modal`), which gives it one more
+ * class of specificity than the stock rule it replaces; no !important needed.
+ */
+.wallet-adapter-modal[role="dialog"] {
+  /* The stock root and overlay both dim at 50%; let the overlay alone do it. */
+  background: transparent;
+}
+.wallet-adapter-modal .wallet-adapter-modal-overlay {
+  background: #050704bb;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.wallet-adapter-modal .wallet-adapter-modal-wrapper {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ffedcd14;
+  border-radius: 16px;
+  background: #171815;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  color: #ffedcd;
+  font-family: Rubik, system-ui, sans-serif;
+}
+.wallet-adapter-modal .wallet-adapter-modal-title {
+  padding: 32px 64px 20px;
+  color: #ffedcd;
+  font-family: "Bricolage Grotesque", Rubik, sans-serif;
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* Close: muted glyph, cream on hover, amber focus ring. */
+.wallet-adapter-modal .wallet-adapter-modal-button-close {
+  top: 14px;
+  right: 14px;
+  padding: 10px;
+  border-radius: 10px;
+  background: transparent;
+  transition: background-color 0.15s;
+}
+.wallet-adapter-modal .wallet-adapter-modal-button-close svg {
+  fill: #928d86;
+  transition: fill 0.15s;
+}
+.wallet-adapter-modal .wallet-adapter-modal-button-close:hover {
+  background: #ffedcd0d;
+}
+.wallet-adapter-modal .wallet-adapter-modal-button-close:hover svg {
+  fill: #ffedcd;
+}
+.wallet-adapter-modal .wallet-adapter-modal-button-close:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 2px;
+}
+
+/* Wallet rows. */
+.wallet-adapter-modal .wallet-adapter-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0 16px 16px;
+  box-sizing: border-box;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button {
+  height: 48px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: #ffedcd;
+  font-family: Rubik, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  transition: background-color 0.15s;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button:not([disabled]):hover {
+  background: #ffedcd0d;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button:not([disabled]):focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: -2px;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button-start-icon,
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button-start-icon img {
+  width: 26px;
+  height: 26px;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button-start-icon img {
+  border-radius: 7px;
+}
+/* "Detected" badge on installed wallets. */
+.wallet-adapter-modal .wallet-adapter-modal-list .wallet-adapter-button span {
+  color: #a7a099;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 1;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list-more {
+  margin: -8px 16px 12px 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: #a7a099;
+  font-family: Rubik, system-ui, sans-serif;
+  font-size: 13px;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list-more svg {
+  fill: currentColor;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list-more:hover {
+  color: #ffedcd;
+}
+.wallet-adapter-modal .wallet-adapter-modal-list-more:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 2px;
+}
+/* No-wallet state: the "Get started" CTA uses the brand cream primary. */
+.wallet-adapter-modal .wallet-adapter-modal-middle {
+  padding: 0 16px 16px;
+}
+.wallet-adapter-modal .wallet-adapter-modal-middle-button {
+  margin-top: 24px;
+  border-radius: 10px;
+  background: #ffedcd;
+  color: #1c0d00;
+  font-family: Rubik, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+.wallet-adapter-modal .wallet-adapter-modal-middle-button:hover {
+  background: #fff5e3;
+}
+.wallet-adapter-modal .wallet-adapter-modal-middle-button:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 2px;
+}
+
+/*
+ * Desktop chain picker (ui-chain-selector dropdown, 456px, 3 columns): long
+ * names such as "Robinhood Chain" wrapped to two lines and made that row
+ * taller. Keep names on one line and widen the panel so three columns fit.
+ * Scoped to the dropdown menu, so the mobile chain sheet is unaffected.
+ */
+.oui-dropdown-menu-content:has(.oui-tabs-content > .oui-grid-cols-3) {
+  width: 504px;
+  max-width: calc(100vw - 32px);
+}
+.oui-dropdown-menu-content .oui-tabs-content > .oui-grid-cols-3 > button span {
+  white-space: nowrap;
+}
+
+/*
+ * EVM wallet modal (web3-onboard, shadow DOM). Surfaces/text/font come from
+ * the ThemingMap in orderlyProvider/walletConnector.tsx; links, the info icon
+ * and the step dots read --onboard-primary-500 directly, which custom-property
+ * inheritance through the host lets us set here.
+ */
+onboard-v2 {
+  --onboard-primary-500: #fea911;
+  --onboard-link-color: #fea911;
+  --onboard-modal-backdrop: #050704bb;
+}
+
+/*
+ * Deposit / withdraw dialog (@orderly.network/ui-transfer 3.1.11, opened from
+ * game/BalanceBar.tsx as a dialog on desktop and a bottom sheet on mobile).
+ * The SDK gives neither surface a class of its own; the forms carry
+ * `#oui-deposit-form` / `#oui-withdraw-form` (only the active tab is mounted),
+ * so the surface is matched with :has() and everything else is scoped under
+ * those ids. Copy changes live in orderlyProvider/transferCopy.ts.
+ * orderlyProvider/transferDialog.test.tsx renders both forms and checks that
+ * the "hide" selectors below match exactly the rows they are meant to.
+ */
+
+/* Hide: perps-only rows. Deposit summary under the amount (collateral ratio,
+   collateral contribution, LTV); the fee line is a <span> and stays. */
+#oui-deposit-form .oui-mt-2.oui-flex-col.oui-gap-1 > div.oui-justify-between {
+  display: none;
+}
+/* Deposit destination block: down-arrow divider, "Your <broker> balance" row
+   and the read-only second amount input. With USDC only (no swap deposit) it
+   always mirrors the amount above. Anchored on the only read-only input in
+   the form, then its two preceding siblings. (YieldBearingReminder renders
+   nothing for USDC, so nothing to hide there.) */
+#oui-deposit-form .oui-input-root:has(> input[readonly]),
+#oui-deposit-form :has(+ .oui-input-root > input[readonly]),
+#oui-deposit-form :has(+ * + .oui-input-root > input[readonly]) {
+  display: none;
+}
+/* Withdraw LTV row (between the destination tabs and the fee line). */
+#oui-withdraw-form > .oui-box > .oui-box.oui-px-2.oui-mt-2 {
+  display: none;
+}
+/* Withdraw "Other <broker> account" tab: internal transfer by account ID. */
+#oui-withdraw-form [role="tab"][id$="-trigger-accountId"] {
+  display: none;
+}
+/* The account row ("Your account balance") draws appIcons.secondary, our
+   compact <CatoBrand> lockup ("Up Down"), on its right. It is
+   product branding, not part of the balance; drop it in both forms. */
+#oui-withdraw-form .cato-brand,
+#oui-deposit-form .cato-brand {
+  display: none;
+}
+
+/* Surface: match our dialogs (wallet modal above). */
+.oui-dialog-content:has(#oui-deposit-form, #oui-withdraw-form) {
+  border: 1px solid #ffedcd14;
+  border-radius: 16px;
+  background: #171815;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+.oui-sheet-content:has(#oui-deposit-form, #oui-withdraw-form) {
+  border-top: 1px solid #ffedcd14;
+  background: #171815;
+}
+/* The Deposit / Withdraw tabs are the dialog's heading. */
+.oui-dialog-content [role="tab"][id$="-trigger-deposit"],
+.oui-dialog-content [role="tab"][id$="-trigger-withdraw"],
+.oui-sheet-content [role="tab"][id$="-trigger-deposit"],
+.oui-sheet-content [role="tab"][id$="-trigger-withdraw"] {
+  font-family: "Bricolage Grotesque", Rubik, sans-serif;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+/* Confirm button: amber like .nl-button-amber, not the SDK's darker orange.
+   Disabled keeps the SDK's grey. */
+#oui-deposit-form .oui-button.oui-bg-primary-darken:not(:disabled),
+#oui-withdraw-form .oui-button.oui-bg-primary-darken:not(:disabled) {
+  background: #fea911;
+  color: #1c0d00;
+}
+#oui-deposit-form .oui-button.oui-bg-primary-darken:not(:disabled):hover,
+#oui-withdraw-form .oui-button.oui-bg-primary-darken:not(:disabled):hover {
+  background: #ffbd44;
+}

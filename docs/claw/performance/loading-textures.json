@@ -1,0 +1,26 @@
+{
+  "method": "Same-resolution WebP encoding; material parameters and all gameplay rules unchanged.",
+  "textures": [
+    {
+      "name": "diffuse",
+      "originalBytes": 927975,
+      "optimizedBytes": 296414,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "name": "normal",
+      "originalBytes": 883889,
+      "optimizedBytes": 347652,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "name": "arm",
+      "originalBytes": 614195,
+      "optimizedBytes": 79178,
+      "width": 1024,
+      "height": 1024
+    }
+  ]
+}

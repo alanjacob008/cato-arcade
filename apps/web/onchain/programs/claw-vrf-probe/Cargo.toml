@@ -1,0 +1,25 @@
+[package]
+name = "claw-vrf-probe"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "claw_vrf_probe"
+
+[features]
+default = []
+devnet = []
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "=1.0.2"
+ephemeral-rollups-sdk = { version = "=0.17.3", features = ["anchor", "vrf"] }

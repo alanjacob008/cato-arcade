@@ -1,0 +1,134 @@
+/* Chat view that replaces the staking card's contents while open. */
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(227, 122, 38, 0.25);
+}
+.head strong {
+  font-family: var(--font-display), var(--font-brand), sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.back {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(227, 122, 38, 0.45);
+  background: transparent;
+  color: #f5f5f5;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.back:hover {
+  background: rgba(254, 169, 17, 0.12);
+  color: #fea911;
+}
+.back:focus-visible,
+.choice:focus-visible {
+  outline: 2px solid #fea911;
+  outline-offset: 3px;
+}
+
+.log {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 2px;
+}
+.fromCato,
+.fromYou {
+  max-width: 88%;
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  animation: pop 200ms ease-out both;
+}
+.fromCato {
+  --ticker-color: #d3601e;
+  align-self: flex-start;
+  border-radius: 16px 16px 16px 4px;
+  background: #ffedcd;
+  color: #1c0d00;
+}
+.fromYou {
+  align-self: flex-end;
+  border-radius: 16px 16px 4px 16px;
+  background: rgba(254, 169, 17, 0.16);
+  color: #f5f5f5;
+}
+.typing {
+  display: flex;
+  gap: 4px;
+  padding: 14px;
+}
+.typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1c0d00;
+  animation: blink 1s infinite;
+}
+.typing span:nth-child(2) {
+  animation-delay: 150ms;
+}
+.typing span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(227, 122, 38, 0.25);
+}
+.choice {
+  padding: 8px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(227, 122, 38, 0.45);
+  background: transparent;
+  color: #f5f5f5;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.choice:hover:not(:disabled) {
+  background: rgba(254, 169, 17, 0.12);
+  color: #fea911;
+}
+.choice:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.done {
+  margin: 0;
+  color: #a7a0b8;
+  font-size: 13px;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fromCato, .fromYou, .typing span { animation: none; }
+}

@@ -1,0 +1,43 @@
+{
+  "changes": [
+    "Weighted loading bar tied to completed font, logo, texture, pile, scene and shader milestones; no artificial timer",
+    "Same-resolution versioned WebP textures with immutable cache headers",
+    "One bounded initial pose cache per demo player/layout version; canonical prizes/odds reconstructed and current removals restored independently",
+    "Physics worker starts on first actual job; unused worker skipped for a valid cached startup",
+    "Token thumbnail GPU rendering waits until the main machine is ready and browser idle",
+    "Tutorial, token shop and withdrawal dialog load on demand",
+    "Loading errors show a failure message instead of spinning indefinitely"
+  ],
+  "validation": {
+    "unchangedEngine": "Exact deep equality against the previously deployed engine for seeds 7,42,2026; full reward and worker parity suites passed.",
+    "startup": {
+      "environment": "Node simulation/cache timings, not browser startup or FPS",
+      "measurements": [
+        {
+          "simulationMs": 1708,
+          "cacheRestoreMs": 1.01
+        },
+        {
+          "simulationMs": 2222,
+          "cacheRestoreMs": 2.44
+        },
+        {
+          "simulationMs": 1987,
+          "cacheRestoreMs": 0.69
+        }
+      ],
+      "textureBytes": {
+        "before": 2426059,
+        "after": 723244
+      }
+    },
+    "initialJavaScript": {
+      "beforeBytes": 1417930,
+      "afterBytes": 1416828,
+      "beforeGzipEstimate": 407103,
+      "afterGzipEstimate": 408313,
+      "note": "Overall initial JavaScript size is effectively unchanged; do not claim a material bundle reduction."
+    }
+  },
+  "remaining": "First-visit physics still runs once; core Three.js JavaScript, scene construction and GPU shader warm-up remain. Node timings and HTTP byte checks are not browser load-time measurements."
+}

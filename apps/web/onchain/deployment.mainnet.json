@@ -1,0 +1,10 @@
+{
+  "cluster": "mainnet-beta",
+  "adminAuthority": "C4xZVdouF6Qpd5PndLQe1HPYoBQBSqh7ag9nyXGahigg",
+  "deploymentAuthority": "C4xZVdouF6Qpd5PndLQe1HPYoBQBSqh7ag9nyXGahigg",
+  "treasuryOwner": "C4xZVdouF6Qpd5PndLQe1HPYoBQBSqh7ag9nyXGahigg",
+  "rpcUrlEnvironmentVariable": "HELIUS_RPC_URL",
+  "walletConnection": "deferred-until-cato-merge",
+  "vrfProbeProgram": "FYrH8Zsey8799rw5tygGDfm5JX55Mersz3ArAufJCctE",
+  "vrfProbeStatus": "not_deployed"
+}

@@ -1,0 +1,277 @@
+@font-face {
+  font-family: "Cato Arcade Pixel";
+  src: url("/claw/fonts/pixel-sans-serif.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* The shell is a control deck: charcoal steel, printed labels and a recessed score display,
+   lit by the arcade's amber. Teal belongs to the chain only (see hud.module.css). */
+.arcade[data-theme] {
+  --night: #0B0A09; --deck: #1A1714; --deck-edge: #2B2621; --amber: #FEA911; --ember: #D3601E;
+  --cream: #FFEDCD; --espresso: #1C0D00; --signal: #ED2939; --proof: #4FE3C1; --muted: #A8A096;
+  --line: #ffedcd1f;
+  --pixel: "Cato Arcade Pixel", monospace;
+  background: radial-gradient(ellipse 70% 40% at 30% -8%, #fea9110f, transparent 70%), var(--night);
+  color: var(--cream);
+  padding: 0 clamp(12px, 2.2vw, 36px) 18px;
+}
+.arcade .header { flex-basis: 64px; border-bottom-color: #fea9111a; }
+.arcade .brand { gap: 12px; color: var(--cream); font: 400 21px/1 var(--pixel); letter-spacing: .02em; }
+.arcade .brand img { width: 36px; height: 36px; border: 0; border-radius: 0; }
+.arcade .brand > span { display: flex; align-items: baseline; gap: 10px; }
+.arcade .brand small { display: inline; margin: 0; color: var(--amber); font: 400 11px/1 var(--pixel); letter-spacing: .12em; text-shadow: 0 0 10px #fea91166; }
+.arcade .headerControls { gap: 8px; }
+.arcade .headerControls > span { display: inline-flex; align-items: center; min-height: 24px; border-color: #ffedcd24; color: var(--muted); border-radius: 2px; font: 400 9px/1 monospace; letter-spacing: .08em; }
+/* One control style for every secondary switch on the machine: header, stage and deck.
+   Printed mono labels (Sam's deck type), one height, one steel body, one pressed pedestal. */
+.arcade .headerControls > button, .arcade .switches > button, .arcade .music, .arcade .tokenHeading > button, .arcade .cashout > button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 36px; padding: 0 12px; border: 1px solid #3d352d; border-radius: 3px;
+  background: #221d18; box-shadow: inset 0 1px #ffedcd12, 0 2px 0 #050403;
+  color: #efe2c8; font: 400 10px/1 monospace !important; letter-spacing: .08em; text-transform: uppercase;
+}
+.arcade :is(.headerControls, .switches, .tokenHeading, .cashout) > button svg, .arcade .music svg { flex: none; width: 16px; height: 16px; }
+.arcade .headerControls > button[data-claw-sound-toggle], .arcade .switches > button:last-child { width: 36px; padding: 0; }
+.arcade :is(.headerControls > button[data-claw-sound-toggle], .switches > button:last-child) svg { width: 18px; height: 18px; }
+.arcade .headerControls > button:last-child { width: 36px; padding: 0; color: var(--amber); font: 400 13px/1 var(--pixel) !important; letter-spacing: 0; }
+.arcade .notice { padding-block: 8px 2px; color: var(--muted); font: 11px/1.5 monospace; }
+.arcade .notice strong { color: var(--amber); font-weight: 400; }
+.arcade .reset { padding-block: 7px 12px; color: var(--muted); font: 11px/1.4 monospace; }
+.arcade .reset strong { color: var(--cream); font-weight: 400; }
+.arcade .reset p svg { color: var(--amber); }
+.arcade .layout { gap: 10px; grid-template-columns: minmax(0, 1fr) clamp(310px, 26vw, 380px); }
+.arcade .stage {
+  border: 1px solid #3a322a; border-radius: 3px; background: var(--night);
+  box-shadow: inset 0 0 0 5px #15120f, 0 5px 0 #050403;
+}
+.arcade .stage::after { background: linear-gradient(#0003, transparent 12%, transparent 88%, #0b0a0999); }
+.arcade .stageBottom { left: 16px; bottom: 14px; min-height: 36px; color: #a8a096cc; font-size: 11px; }
+.arcade .switches { top: 14px; right: 14px; gap: 6px; }
+.arcade .switches > button[aria-pressed="true"] { border-color: var(--amber); color: var(--amber); background: #2a2117; }
+.arcade .music { bottom: 14px; right: 14px; backdrop-filter: none; }
+.arcade .console {
+  position: relative; align-self: stretch; padding: 20px 20px 16px; border: 1px solid #36302a;
+  border-top: 3px solid var(--ember); border-radius: 3px;
+  background: repeating-linear-gradient(0deg, #ffedcd03 0 1px, transparent 1px 4px), linear-gradient(#1f1b17, var(--deck) 40%);
+  box-shadow: inset 1px 0 #ffedcd08, inset -1px 0 #0009, inset 0 1px #fea91126, 0 5px 0 #050403;
+  /* Never cut a line off: a deck that outgrows a short window scrolls inside its own frame. */
+  overflow: hidden auto; scrollbar-width: thin; scrollbar-color: #3d352d transparent;
+}
+.console::before {
+  content: ""; position: absolute; pointer-events: none; top: 9px; left: 8px; right: 8px; height: 4px;
+  background: radial-gradient(circle at 2px 2px, #6f6458 0 2px, transparent 2px) left top / 4px 4px no-repeat, radial-gradient(circle at 2px 2px, #6f6458 0 2px, transparent 2px) right top / 4px 4px no-repeat;
+}
+.arcade .tokenHeading { margin: 0 0 12px; gap: 8px; }
+.arcade .tokenHeading h2 { color: var(--amber); font: 400 13px/1.5 var(--pixel); letter-spacing: .06em; text-shadow: 0 0 12px #fea91155; }
+.arcade .tokens { gap: 7px; margin: 0 0 14px; border-radius: 0; }
+.arcade .tokens > div { display: none; }
+.arcade .tokens > button {
+  padding: 9px 3px 8px; border: 1px solid #080706; border-radius: 2px;
+  background: #110f0d; color: #b9ae9d;
+  box-shadow: inset 0 2px 3px #000b, 0 1px #ffedcd0d;
+}
+.arcade .tokens > button[aria-pressed="true"] {
+  border-color: var(--amber); background: #1d1710; color: var(--amber);
+  box-shadow: inset 0 2px 3px #000b, 0 0 0 1px #fea91133, 0 0 14px #fea91122;
+}
+.arcade .tokens > button > strong { margin-top: 7px; font: 400 9px/1.6 var(--pixel); text-transform: uppercase; }
+.arcade .tokens > button > span:last-child { --coin-size: 13px; margin-top: 5px; justify-content: center; color: var(--cream); font: 13px/1.3 monospace; }
+.arcade .chipWell { height: 65px; width: 68px; background: none; }
+.arcade .chipWell > span:first-child { height: 60px; width: 68px; transform: none; }
+/* The rendered coin sits small inside its 160x144 frame; draw it larger without moving the layout. */
+.arcade .chipWell img { transform: scale(1.32); }
+.arcade .count {
+  right: -1px; bottom: -2px; min-width: 26px; padding: 1px 3px; border: 1px solid #4a3f33;
+  border-radius: 1px; background: #070605; color: var(--amber); font: 11px/1.3 monospace;
+}
+.arcade .play, dialog.dialog .play {
+  --button-glow: #ff5a66;
+  min-height: 58px; margin-bottom: 5px; border: 2px solid #ff7a84; border-radius: 5px;
+  /* The face is a shade deeper than signal red so the cream label holds 4.5:1 in every state (hover and
+     focus brighten the whole button, label included); the rim and glow keep the arcade's red. */
+  background: linear-gradient(#d42a38, #a8141f); color: #fff4e2;
+  box-shadow: inset 0 2px #ff9ea6, inset 0 -3px #8f101b, 0 5px 0 #5e0b12, 0 7px 0 2px #070605, 0 10px 26px #ed293930;
+  font: 400 12px/1.7 var(--pixel) !important; letter-spacing: .05em; text-shadow: 0 1px #6e0c15;
+}
+.arcade .play:active:not(:disabled), dialog.dialog .play:active:not(:disabled) { transform: translateY(3px); box-shadow: inset 0 2px #ff9ea6, 0 2px 0 #5e0b12, 0 4px 0 2px #070605; }
+/* Still clearly off (desaturated and dimmed), but its label stays readable at 4.5:1. */
+.arcade .play:disabled { opacity: .65; filter: saturate(.3); }
+.arcade .status { margin-top: 10px; gap: 4px; font: 11px/1.5 monospace; color: var(--muted); }
+.arcade .status button { color: #d8c7a6; }
+.arcade .status button:hover { color: var(--amber); }
+.arcade .score {
+  margin-top: 18px; padding: 14px 13px 10px; border: 1px solid #060505; border-radius: 2px;
+  background: #0c0a08; box-shadow: inset 0 2px 6px #000c, 0 1px #ffedcd0a;
+}
+.arcade .scoreLabel { color: var(--muted); font: 9px/1.5 monospace; letter-spacing: .1em; }
+.arcade .scoreAmount { margin-top: 9px; color: var(--amber); font: 400 clamp(25px, 2.3vw, 35px)/1.3 var(--pixel); letter-spacing: .03em; text-shadow: 0 0 14px #fea91155; }
+.arcade .scoreAmount > span { --coin-size: 23px; }
+.arcade .score [data-sign="1"] { color: var(--amber); }
+.arcade .score dl { margin-top: 12px; }
+.arcade .score dt { color: var(--muted); font: 10px/1.4 monospace; }
+.arcade .score dd { color: var(--cream); font: 13px/1.4 monospace; }
+.arcade .cashout { margin-top: 10px; padding-top: 10px; border-color: #ffedcd1a; }
+.arcade .cashout > span { color: var(--muted); font-family: monospace; }
+.arcade .cashout strong { color: var(--cream); font-family: monospace; }
+.arcade .activity { margin-top: auto; padding-top: 12px; border-top: 0; }
+/* On the desktop deck the spare height is shared above the score and above Recent plays,
+   so a quiet deck never shows one dead band; a busy deck closes both gaps first. */
+@media (min-width: 760px) {
+  .arcade .score { margin-top: auto; }
+  .arcade .console > :has(+ .score) { margin-bottom: 12px; }
+}
+.arcade .activity h2 { color: var(--amber); font: 400 9px/1.5 var(--pixel); text-transform: uppercase; letter-spacing: .08em; }
+.arcade .activity p { color: var(--muted); font: 9px/1.5 monospace; }
+.arcade .activity > div:last-child { padding: 8px; overflow: hidden; border: 1px solid #0a0908; background: #100e0c; border-radius: 1px; box-shadow: inset 0 2px 4px #0009; }
+.arcade .activity button { min-width: 36px; min-height: 36px; justify-content: center; color: var(--amber); }
+.arcade .activity button svg { width: 18px; height: 18px; }
+
+/* Shared dialogs use the same panel materials, without touching their transaction behavior. */
+dialog.dialog {
+  --night: #0B0A09; --amber: #FEA911; --ember: #D3601E; --cream: #FFEDCD; --muted: #A8A096; --proof: #4FE3C1;
+  --line: #ffedcd1f; --pixel: "Cato Arcade Pixel", monospace;
+  border: 1px solid #3d352d; border-top: 3px solid var(--ember); border-radius: 3px;
+  background: radial-gradient(ellipse 90% 50% at 50% 0, #fea9110d, transparent 70%), #1a1714;
+  color: var(--cream); box-shadow: 0 0 0 1px #000, 0 20px 100px #000c, 0 0 80px #fea9110f;
+}
+dialog.dialog::backdrop { background: #0b0a09e6; backdrop-filter: blur(4px); }
+dialog.dialog[open] { animation: dialogIn .22s cubic-bezier(.2,.8,.2,1) both; }
+dialog.dialog[open]::backdrop { animation: backdropIn .22s ease-out both; }
+@keyframes dialogIn { from { opacity: 0; transform: translateY(8px); } }
+@keyframes backdropIn { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { dialog.dialog[open], dialog.dialog[open]::backdrop { animation: none; } }
+dialog.dialog h2 { color: var(--amber); font: 400 16px/1.8 var(--pixel); letter-spacing: .02em; text-shadow: 0 0 14px #fea91144; }
+dialog.dialog h3 { color: var(--cream); }
+dialog.dialog p, dialog.dialog li { color: #cfc3ae; }
+dialog.dialog section li strong { color: var(--cream); }
+dialog.dialog button:not(.play), dialog.dialog input { border-radius: 2px; background-color: #110f0d; color: var(--cream); border-color: #3d352d; }
+dialog.dialog button[aria-pressed="true"] { color: var(--amber); border-color: var(--amber); background: #231b11; }
+dialog.dialog table { color: var(--cream); }
+dialog.dialog a { color: var(--amber); }
+dialog.dialog small { color: var(--muted); }
+dialog.dialog li::marker { color: var(--amber); }
+dialog.dialog label { border-color: #3d352d; border-radius: 2px; background: #110f0d; }
+dialog.dialog label[data-selected="true"] { border-color: var(--amber); background: #231b11; }
+dialog.dialog input { accent-color: var(--amber); }
+dialog.dialog button:focus-visible, dialog.dialog input:focus-visible, dialog.dialog a:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+dialog.dialog fieldset legend, dialog.dialog th, dialog.dialog td { color: #cfc3ae; }
+dialog.dialog .empty { color: var(--cream); }
+dialog.dialog .empty svg { color: var(--amber); }
+dialog.dialog .pass { border-color: #3d352d; border-radius: 2px; background: linear-gradient(120deg, #2a2016, #110f0d); }
+dialog.dialog .pass span { color: var(--amber); }
+dialog.dialog .pass img { border-radius: 0; }
+/* The fair-draw note in the tutorial is a chain fact, so it carries the proof colour. */
+dialog.dialog .fairNote {
+  display: grid; grid-template-columns: 10px 1fr; gap: 12px; align-items: start; margin: 4px 0 18px; padding: 12px 14px;
+  border: 1px solid #4fe3c140; border-radius: 2px; background: #4fe3c10d;
+}
+dialog.dialog .fairNote::before { content: ""; width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: var(--proof); box-shadow: 0 0 10px #4fe3c1aa; }
+dialog.dialog .fairNote p { margin: 0; color: var(--cream); font-size: 13px; line-height: 1.5; }
+dialog.dialog .fairNote strong { color: var(--proof); font-weight: 500; }
+
+/* Light the switch face, then compress the existing pedestal when pressed. */
+.arcade button, dialog.dialog button {
+  transition: transform .07s ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .arcade button:not(:disabled):not([aria-disabled="true"]):not([aria-describedby]):hover,
+  dialog.dialog button:not(:disabled):not([aria-disabled="true"]):hover {
+    filter: brightness(1.16) drop-shadow(0 0 5px color-mix(in srgb, var(--button-glow, #FEA911) 35%, transparent));
+    border-color: var(--button-glow, #c99a4a);
+  }
+  /* With the shared brightness(1.16) this lights to about signal red (#ed2e3f at the top) and keeps 4.5:1. */
+  .arcade .play:hover:not(:disabled), dialog.dialog .play:hover:not(:disabled) { background: linear-gradient(#cc2836, #a2131d); }
+  .arcade button:not(:disabled):not([aria-disabled="true"]):not([aria-describedby]):hover { border-color: var(--button-edge, var(--button-glow, #c99a4a)); }
+}
+.arcade button:not(:disabled):not([aria-disabled="true"]):not([aria-describedby]):focus-visible,
+dialog.dialog button:not(:disabled):not([aria-disabled="true"]):focus-visible {
+  filter: brightness(1.12) drop-shadow(0 0 5px color-mix(in srgb, var(--button-glow, #FEA911) 35%, transparent));
+}
+.arcade button:not(.play):not(:disabled):not([aria-disabled="true"]):not([aria-describedby]):active,
+dialog.dialog button:not(.play):not(:disabled):not([aria-disabled="true"]):active {
+  transform: translateY(2px); filter: brightness(.96); transition-duration: .04s;
+}
+.arcade :is(.headerControls, .switches, .tokenHeading, .tokens, .cashout) button:not(:disabled):active,
+.arcade .music:not(:disabled):active, dialog.dialog button:not(.play):not(:disabled):active {
+  box-shadow: inset 0 2px 3px #0008, 0 0 0 #050403;
+}
+@media (prefers-reduced-motion: reduce) {
+  .arcade button, dialog.dialog button { transition: none; }
+}
+
+@media (min-width: 760px) and (max-height: 850px) {
+  .arcade .header { flex-basis: 48px; }
+  .arcade .console { padding: 16px 15px 12px; }
+  .arcade .tokenHeading { margin-bottom: 9px; }
+  .arcade .tokens { margin-bottom: 12px; }
+  .arcade .tokens > button { padding-block: 8px; }
+  .arcade .chipWell, .arcade .chipWell > span:first-child { height: 43px; width: 52px; }
+  .arcade .play { min-height: 46px; }
+  .arcade .status { margin-top: 9px; font-size: 9px; }
+  .arcade .score { margin-top: 12px; padding: 12px 10px 9px; }
+  .arcade .scoreAmount { font-size: 26px; }
+  .arcade .cashout { margin-top: 8px; padding-top: 8px; }
+}
+/* Phones: every control is a full 44px touch target and nothing overlaps. */
+@media (max-width: 759px) {
+  .arcade[data-theme] { padding: 0 8px 8px; }
+  .arcade .header { flex-basis: 52px; }
+  .arcade .brand { font-size: 16px; gap: 7px; }
+  .arcade .brand { min-height: 44px; }
+  .arcade .score button[aria-describedby] { position: relative; z-index: 1; padding-block: 17px; margin-block: -17px; }
+  .arcade .brand img { width: 28px; height: 28px; }
+  .arcade .brand small { font-size: 8px; }
+  .arcade .headerControls { gap: 6px; }
+  .arcade .headerControls > span, .arcade .headerControls > button:last-child { display: none; }
+  .arcade .headerControls > button { min-height: 44px; }
+  .arcade .headerControls > button[data-claw-sound-toggle] { width: 44px; }
+  .arcade .notice { font-size: 9px; padding-block: 4px 0; }
+  .arcade .reset { font-size: 9px; padding-block: 5px 8px; }
+  .arcade .layout { grid-template-columns: 1fr; gap: 7px; }
+  .arcade .console { padding: 12px 10px 10px; gap: 8px 10px; }
+  .arcade .tokenHeading { margin: 0; align-items: center; }
+  .arcade .tokenHeading h2 { font-size: 11px; }
+  .arcade .tokenHeading > button { min-height: 44px; padding-inline: 12px; font-size: 10px !important; }
+  .arcade .tokens { margin: 0; gap: 5px; }
+  .arcade .tokens > button { min-height: 50px; padding: 5px 3px; grid-template-columns: 33px 1fr; }
+  .arcade .chipWell, .arcade .chipWell > span:first-child { width: 33px; height: 34px; }
+  .arcade .tokens > button > strong { margin: 0; font-size: 7px; }
+  .arcade .tokens > button > span:last-child { margin: 0; font-size: 10px; --coin-size: 11px; }
+  .arcade .count { font-size: 8px; min-width: 17px; padding: 0 2px; right: -2px; }
+  .arcade .play { min-height: 50px; margin-bottom: 4px; font-size: 11px !important; }
+  .arcade .status { margin: 0; font-size: 9px; }
+  .arcade .status button { min-height: 44px; }
+  .arcade .score { margin: 0; padding: 9px 8px 6px; gap: 3px 8px; }
+  .arcade .scoreLabel { font-size: 8px; }
+  .arcade .scoreAmount { margin: 0; font-size: 20px; }
+  .arcade .scoreAmount > span { --coin-size: 16px; }
+  .arcade .score dl { margin: 0; }
+  .arcade .score dt { font-size: 8px; }
+  .arcade .score dd { font-size: 11px; }
+  .arcade .cashout { margin-top: 3px; padding-top: 5px; }
+  .arcade .cashout > span { font-size: 9px; }
+  .arcade .cashout > button { min-height: 44px; font-size: 10px; padding: 5px 14px; }
+  .arcade .activity { margin: 0; padding-top: 1px; }
+  .arcade .activity button { min-width: 44px; min-height: 44px; }
+  .arcade .activity[data-has-plays="true"] { display: block; }
+  .arcade .activity[data-has-plays="true"] > div:first-child { margin-bottom: 5px; }
+  .arcade .activity > div:last-child { padding: 4px 6px; }
+  .arcade .switches { top: 7px; right: 7px; }
+  .arcade .switches > button { min-height: 44px; }
+  .arcade .switches > button:last-child { width: 44px; }
+  .arcade .music { min-height: 44px; bottom: 7px; right: 7px; }
+  .arcade .stageBottom { left: 12px; bottom: 7px; min-height: 44px; font-size: 10px; }
+}
+@media (max-width: 479px) {
+  .arcade .switches > button:first-child { width: 44px; padding: 0; }
+}
+@media (max-width: 759px) and (max-height: 500px) and (orientation: landscape) {
+  .arcade .header { flex-basis: 34px; }
+  .arcade .layout { grid-template-columns: minmax(0, 1fr) 275px; }
+  .arcade .console { padding: 8px; gap: 4px 8px; }
+  .arcade .notice, .arcade .reset { padding-block: 2px; }
+  .arcade .play { min-height: 32px; font-size: 9px !important; }
+  .arcade .score { padding: 5px 7px; }
+  .arcade .scoreAmount { font-size: 17px; }
+  .arcade .status { font-size: 8px; }
+}

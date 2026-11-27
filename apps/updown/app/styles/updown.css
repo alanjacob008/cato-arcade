@@ -1,0 +1,64 @@
+:root { --nl-cream:#ffedcd; --nl-amber:#fea911; --nl-muted:#969088; --nl-border:#ffedcd14; --nl-green:#81dab2; --nl-red:#f58b96; }
+body { background:#111211; }
+.cato-brand-wordmark { font-size:26px; letter-spacing:-1.2px; }
+.cato-brand-wordmark > span { font-size:8px; letter-spacing:3px; }
+.nl-shell { max-width:1760px; margin:0 auto; padding:28px 24px 28px; color:#ebe7df; font-size:13px; }
+.nl-shell button,.nl-dialog button { cursor:pointer; transition:background .16s,transform .16s,border-color .16s; }
+.nl-shell button:disabled,.nl-dialog button:disabled { opacity:.4; cursor:not-allowed; }
+.nl-shell h1,.nl-shell h2,.nl-shell h3,.nl-dialog h2 { font-family:'Bricolage Grotesque',Rubik,sans-serif; color:var(--nl-cream); }
+.nl-page-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:27px; }
+.nl-eyebrow { font-size:10px; font-weight:500; letter-spacing:2px; color:var(--nl-amber); margin:0 0 12px; }
+.nl-eyebrow > span { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--nl-amber); margin-right:7px; }
+.nl-page-heading h1 { font-size:clamp(32px,3.4vw,48px); letter-spacing:-1.8px; line-height:1.08; margin:0 0 10px; font-weight:750; }
+.nl-page-heading h1 em { color:var(--nl-amber); font-style:normal; }
+.nl-page-heading p:last-child { color:var(--nl-muted); margin:0; font-size:13px; }
+.nl-balance-bar { display:flex; align-items:center; gap:25px; padding:18px 23px; background:#1b1c18; border:1px solid var(--nl-border); border-radius:14px; margin-bottom:23px; }
+.nl-balance-icon { width:43px; height:43px; border:1px solid #fea91128; border-radius:12px; display:grid; place-items:center; color:var(--nl-amber); background:#fea91108; }
+.nl-label { display:block; color:var(--nl-muted); font-size:10px; margin-bottom:6px; letter-spacing:.2px; }
+.nl-balance-bar strong { font-size:23px; font-family:'Bricolage Grotesque',sans-serif; color:var(--nl-cream); font-weight:600; }
+/* Every stat is label + a 28px value box with the number sitting on its bottom, so all labels share a top line and the
+   values share (within a pixel) a baseline, whatever their font size. */
+.nl-balance-bar :is(strong,.nl-balance-detail b) { display:flex; align-items:flex-end; height:28px; line-height:1; white-space:nowrap; }
+.nl-balance-detail { border-left:1px solid var(--nl-border); padding-left:25px; }.nl-balance-detail b { font-family:'Bricolage Grotesque',Rubik,sans-serif; font-weight:600; font-size:20px; color:var(--nl-cream); letter-spacing:-.2px; font-variant-numeric:tabular-nums; }
+.nl-funding-actions { display:flex; gap:9px; align-items:center; margin-left:auto; }.nl-button { display:inline-flex; justify-content:center; align-items:center; gap:7px; min-height:38px; padding:9px 15px; background:#252620; border:1px solid #ffedcd20; color:var(--nl-cream); border-radius:8px; font-size:12px; font-weight:500; text-decoration:none; }.nl-button:hover { background:#34352b; }a.nl-button,a.nl-button:visited { color:var(--nl-cream); font-family:inherit; white-space:nowrap; }.nl-button-amber { color:#281c06; background:var(--nl-amber); border-color:var(--nl-amber); }.nl-button-amber:hover { background:#ffbd44; }.nl-full { width:100%; }
+.nl-game-grid { display:grid; grid-template-columns:minmax(0,1fr) 346px; gap:22px; align-items:stretch; }
+.nl-market-panel,.nl-play-panel { background:#171815; border:1px solid var(--nl-border); border-radius:16px; overflow:hidden; }
+/* Play screen card header: a single toolbar line (see game.css). No market, price or leverage ever shows here. */
+.nl-coin { flex-shrink:0; display:grid; place-items:center; width:39px; height:39px; border-radius:50%; background:#2c2820; color:#ffce7c; border:1px solid #ffce7c28; font-weight:600; font-size:18px; }
+.nl-positive { color:var(--nl-green)!important; }.nl-negative { color:var(--nl-red)!important; }.nl-live { margin-left:auto; font-size:10px; letter-spacing:1.4px; color:var(--nl-muted); white-space:nowrap; display:flex; align-items:center; gap:7px; }.nl-live i { width:5px; height:5px; border-radius:50%; background:var(--nl-green); box-shadow:0 0 0 4px #81dab210; }
+.nl-chart-toolbar { margin:0 24px; padding:14px 0; border-top:1px solid var(--nl-border); display:flex; justify-content:space-between; color:var(--nl-muted); font-size:10px; }.nl-chart-toolbar b { font-weight:400; color:#c7c1b7; margin-left:5px; }.nl-chart-dot { display:inline-block; background:#5f5a50; width:3px; height:3px; margin:0 8px 2px; border-radius:50%; }
+.nl-chart { padding:0 15px; }.nl-chart svg { display:block; width:100%; min-height:280px; }.nl-grid { stroke:#ffedcd0b; }.nl-chart-label { fill:#8f8b80; font:10px Rubik,sans-serif; }.nl-entry-label { fill:#e9e1d2; font:10px Rubik,sans-serif; }.nl-current-price { font:500 11px Rubik,sans-serif; fill:#231b0a; }.nl-chart-caption { display:flex; justify-content:space-between; padding:3px 10px 20px; color:#8a8578; font-size:10px; }.nl-chart-empty { min-height:325px; display:grid; place-items:center; color:var(--nl-muted); }
+.nl-round-strip { display:flex; align-items:center; gap:10px; padding:17px 24px; background:#fea91106; border-top:1px solid #fea91115; border-bottom:1px solid #fea91115; color:#c2b8a5; font-size:11px; }.nl-round-strip svg { color:var(--nl-amber); }.nl-round-strip b { margin-left:auto; color:var(--nl-amber); font-weight:500; }
+.nl-error { color:#ffc2c9; background:#f58b9610; border:1px solid #f58b9633; border-radius:8px; padding:12px; margin:14px 0; font-size:11px; line-height:1.6; overflow-wrap:anywhere; }.nl-field-error { color:#f4ad86; font-size:10px; line-height:1.6; margin-bottom:12px; }.nl-muted { color:var(--nl-muted); font-size:11px; line-height:1.8; }
+.nl-dialog { position:fixed; inset:0; color:#eee7d9; background:#1c1e19; border:1px solid #ffedcd30; border-radius:18px; padding:27px; width:min(460px,calc(100% - 32px)); max-height:85vh; overflow:auto; margin:auto; box-shadow:0 28px 120px #000a; }.nl-dialog::backdrop { background:#050704bb; backdrop-filter:blur(7px); }.nl-dialog-title { display:flex; gap:15px; justify-content:space-between; align-items:flex-start; margin-bottom:21px; }.nl-dialog-title h2 { margin:0; font-size:27px; letter-spacing:-.7px; }.nl-dialog-title .nl-eyebrow { font-size:10px; margin-bottom:8px; }.nl-dialog-title button { background:none; border:0; color:#a8a395; padding:5px; }.nl-confirm-copy { color:#c5baa4; font-size:12px; line-height:1.8; }.nl-consent { display:flex; gap:11px; align-items:flex-start; color:#b6ae9d; line-height:1.7; font-size:11px; margin:20px 0; }.nl-consent input { accent-color:var(--nl-amber); margin-top:3px; flex-shrink:0; width:16px; height:16px; }
+.nl-powered { font-size:10px; color:#8c8475; display:inline-flex; align-items:center; gap:12px; }.nl-powered a { color:#c9b995; text-decoration:none; }
+.nl-mute { display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border:1px solid var(--nl-border); border-radius:999px; background:transparent; color:#c9b995; font:inherit; font-size:10px; line-height:1; cursor:pointer; }.nl-mute:hover { color:var(--nl-amber); border-color:var(--nl-amber); }.nl-mute[data-muted="true"] { color:#8c8475; }.nl-mute:focus-visible { outline:2px solid var(--nl-amber); outline-offset:2px; }.nl-powered a:hover { color:var(--nl-amber); text-decoration:underline; text-underline-offset:3px; }.nl-portfolio-tabs { display:flex; gap:24px; overflow:auto; margin:20px 0; border-bottom:1px solid var(--nl-border); }.nl-portfolio-tabs a { color:#a49b8a; padding:12px 0 16px; font-size:12px; white-space:nowrap; }.nl-portfolio-tabs a.active { color:var(--nl-amber); border-bottom:2px solid var(--nl-amber); }.nl-portfolio-content { min-height:420px; }.nl-round-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; }.nl-round-stats > div { background:#1b1c18; border:1px solid var(--nl-border); padding:24px; border-radius:12px; }.nl-round-stats strong { font-family:'Bricolage Grotesque',sans-serif; font-size:29px; color:var(--nl-cream); }.nl-rounds > .nl-muted { margin:18px 0; }.nl-table-scroll { overflow:auto; }.nl-history { width:100%; border-collapse:collapse; text-align:left; font-size:12px; }.nl-history th { color:#8f8777; font-weight:400; font-size:10px; }.nl-history td,.nl-history th { padding:18px 14px; border-bottom:1px solid var(--nl-border); white-space:nowrap; }.nl-history small { display:block; color:#8f8777; font-size:10px; margin-top:5px; }.nl-empty { text-align:center; padding:40px; }.nl-empty img { width:105px; height:100px; object-fit:contain; margin:0 auto 20px; }.nl-empty h3 { font-size:24px; }.nl-empty p { color:var(--nl-muted); margin-top:10px; }
+@media (max-width:1100px) { .nl-shell { padding:24px 24px 28px; }.nl-game-grid { grid-template-columns:minmax(0,1fr) 320px; gap:15px; }.nl-balance-detail { padding-left:16px; }.nl-balance-bar { gap:16px; }.nl-balance-detail:nth-of-type(4) { display:none; }.nl-play-panel { padding:19px; } }
+@media (max-width:760px) { .nl-shell { padding:20px 16px 80px; }.nl-page-heading { margin-bottom:22px; }.nl-page-heading .nl-eyebrow { font-size:10px; letter-spacing:1.1px; }.nl-page-heading h1 { font-size:32px; letter-spacing:-1px; }.nl-page-heading p:last-child { font-size:11px; }.nl-balance-bar { padding:14px; gap:12px; flex-wrap:wrap; }.nl-balance-bar strong { font-size:23px; }.nl-balance-detail { margin-left:auto; padding-left:0; border:0; }.nl-balance-icon { width:36px; height:36px; }.nl-funding-actions { width:100%; margin:2px 0 0; padding-top:12px; border-top:1px solid var(--nl-border); container-type:inline-size; }.nl-funding-actions .nl-button { flex:1 1 0; min-width:0; padding:9px 10px; gap:4px; font-size:11px; white-space:nowrap; }.nl-funding-actions .nl-button svg { flex-shrink:0; width:13px; height:13px; }.nl-game-grid { grid-template-columns:1fr; }.nl-chart-toolbar { margin:0 16px; }.nl-chart { padding:0 7px; }.nl-chart svg { min-height:190px; }.nl-chart-caption { padding-bottom:14px; }.nl-round-strip { padding:14px 16px; font-size:10px; }.nl-play-panel { padding:22px; }.nl-card-heading { margin-bottom:18px; }.nl-fineprint { font-size:10px; }.nl-round-stats { gap:8px; }.nl-round-stats > div { padding:15px 10px; }.nl-round-stats strong { font-size:21px; }.nl-round-stats .nl-label { font-size:9px; }.nl-portfolio-tabs { gap:20px; }}
+@media (max-width:760px) {
+  /* Phones: when the legend and range buttons don't fit one line, the buttons wrap to their own row (right-aligned);
+     the range buttons grow to a 36px tap target. */
+  .nl-chart-controls { column-gap:8px; }
+  .nl-chart-controls button { min-height:36px; min-width:38px; padding:5px 6px; }
+  .nl-dialog { padding:20px; }
+  .nl-dialog-title h2 { font-size:21px; letter-spacing:-.4px; white-space:nowrap; }
+}
+/* Mobile funding row: three equal buttons need ~285px with icons (widest is Withdraw); below that the icons drop so the
+   labels never wrap or spill (320px phones). Sized off the row itself, so a desktop scrollbar cannot tip it over. */
+@container (max-width:291px) { .nl-funding-actions .nl-button svg { display:none; } }
+@media (prefers-reduced-motion:reduce) { .nl-shell * { transition:none!important; } }
+
+.nl-chart-controls { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px 12px; padding:0 10px 12px; color:var(--nl-muted); font-size:10px; }
+.nl-chart-controls > span { display:flex; gap:6px; align-items:center; white-space:nowrap; }
+.nl-chart-controls > [role=group] { display:flex; gap:2px; margin-left:auto; white-space:nowrap; }
+.nl-chart-controls i { width:12px; height:2px; display:inline-block; }.nl-history-key { background:#928875; }.nl-mark-key { background:var(--nl-amber); margin-left:8px; }
+.nl-chart-controls button { background:transparent; border:1px solid transparent; color:var(--nl-muted); border-radius:5px; padding:5px 8px; font-size:10px; white-space:nowrap; }
+.nl-chart-controls button[aria-pressed=true] { color:var(--nl-amber); background:#fea91110; border-color:#fea91125; }
+.nl-break-even-label { fill:#fea911; font:10px Rubik,sans-serif; }
+
+.nl-coin img { display:block; width:100%; height:100%; object-fit:contain; border-radius:50%; }
+.nl-history-market { display:inline-flex; align-items:center; gap:8px; }
+.nl-history-market .nl-coin { width:25px; height:25px; font-size:10px; }
+.nl-chart-controls .nl-profit-key { background:#54d6a0; }
+.nl-chart-controls .nl-loss-key { background:#fb7185; }
+

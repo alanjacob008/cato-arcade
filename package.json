@@ -1,0 +1,35 @@
+{
+  "name": "cato-wrapped-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run dev -w @cato/web",
+    "build": "npm run build -w @cato/web",
+    "start": "npm run start -w @cato/web",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:claw": "npm run test:claw -w @cato/web",
+    "dev:claw": "npm run dev -w @cato/web -- --hostname 127.0.0.1 --port 4331",
+    "dev:vrf:er": "npm run dev:vrf:er -w @cato/web",
+    "test:claw:backend": "npm run test:claw:identities -w @cato/web && npm run test:claw:admin-sign -w @cato/web && npm run test:claw:ledger -w @cato/web && npm run test:claw:player-preview -w @cato/web && npm run test:rpc -w @cato/web && npm run test:vrf:devnet -w @cato/web && npm run test:vrf:deployment -w @cato/web && npm run test:vrf:game -w @cato/web && npm run test:vrf:sponsor -w @cato/web && npm run test:vrf:rpc-transport -w @cato/web && npm run test:vrf:callbacks -w @cato/web && npm run test:vrf:er -w @cato/web && npm run test:vrf:pool -w @cato/web && npm run test:claw:postgres -w @cato/web && npm run test:claw:cashier -w @cato/web && npm run test:claw:hosting -w @cato/web && npm run test:claw:payment-client -w @cato/web && npm run test:claw:player-wallet -w @cato/web && npm run test:claw:session-store -w @cato/web && npm run test:claw:vercel-stage -w @cato/web && npm run test:claw:coordinator-wait -w @cato/web && npm run test:claw:wallet-connect -w @cato/web && npm run test:claw:sponsorship -w @cato/web && npm run test:claw:latency -w @cato/web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "overrides": {
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7"
+  }
+}

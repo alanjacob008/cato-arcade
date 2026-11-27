@@ -1,0 +1,172 @@
+/* In-game HUD moments: the fair-draw strip, the result plates and the win effects.
+   Amber is the arcade, teal (--proof) is the chain, signal red is PLAY and the rare-win strobe. */
+.fairDraw, .outcomeDock, .effects, .fresh {
+  --night: #0B0A09; --deck: #1A1714; --deck-edge: #2B2621; --amber: #FEA911; --ember: #D3601E;
+  --cream: #FFEDCD; --espresso: #1C0D00; --signal: #ED2939; --proof: #4FE3C1; --muted: #A8A096;
+  --pixel: "Cato Arcade Pixel", monospace; --ease: cubic-bezier(.2,.8,.2,1); --ease-enter: cubic-bezier(.22,1,.36,1);
+}
+
+/* ---- Fair draw strip ---------------------------------------------------- */
+.fairDraw {
+  --tone: var(--proof);
+  position: relative; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 4px 12px;
+  min-height: 58px; margin: 10px 0 0; padding: 8px 8px 8px 13px;
+  border: 1px solid color-mix(in srgb, var(--tone) 22%, var(--deck-edge)); border-radius: 2px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tone) 7%, #0d0c0a), #0d0c0a 60%);
+  box-shadow: inset 0 2px 5px #000b, 0 1px #ffffff08;
+  transition: border-color .25s var(--ease), background .25s var(--ease);
+}
+.fairDraw[data-tone="local"] { --tone: var(--amber); background: #0d0c0a; border-color: var(--deck-edge); }
+.fairDraw[data-tone="quiet"] { --tone: var(--muted); background: #0d0c0a; border-color: var(--deck-edge); }
+.fairDraw:is([data-state="ready"], [data-state="waiting"]) { border-color: var(--deck-edge); background: #0d0c0a; }
+.drawLamp {
+  position: relative; display: grid; place-items: center; width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--tone) 70%, transparent); background: transparent;
+}
+.drawLamp svg { width: 12px; height: 12px; fill: none; stroke: var(--night); stroke-width: 2.6; stroke-linecap: square; }
+.fairDraw:is([data-state="drawing"], [data-state="delivered"], [data-state="verified"], [data-state="local-drawing"], [data-state="local-done"]) .drawLamp {
+  border-color: var(--tone); background: var(--tone); box-shadow: 0 0 10px color-mix(in srgb, var(--tone) 70%, transparent);
+}
+.fairDraw[data-state="verified"] .drawLamp { width: 18px; height: 18px; margin-left: -2px; border: 0; }
+.fairDraw:is([data-state="drawing"], [data-state="delivered"], [data-state="local-drawing"]) .drawLamp::after {
+  content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--tone);
+  animation: lampPulse 1.1s linear infinite;
+}
+.fairDraw[data-state="delivered"] .drawLamp::after { animation-duration: 1.8s; }
+@keyframes lampPulse { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(2.4); } }
+.drawText { display: grid; gap: 3px; min-width: 0; }
+.drawText strong { color: var(--tone); font: 400 10px/1.4 var(--pixel); letter-spacing: .12em; }
+.fairDraw[data-tone="local"] .drawText strong { color: var(--amber); }
+.fairDraw:is([data-state="ready"], [data-state="waiting"]) .drawText strong { color: color-mix(in srgb, var(--proof) 80%, var(--cream)); }
+.drawText > span { color: var(--cream); font: 400 13px/1.4 var(--font-cato-body), sans-serif; overflow-wrap: break-word; }
+.drawTime { white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* The strip's sentence for screen readers: visually hidden, announced once per change. */
+.spoken { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.fairDraw[data-tone="quiet"] .drawText > span, .fairDraw[data-state="local-ready"] .drawText > span { color: var(--muted); }
+.drawLink {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--proof) 45%, transparent); border-radius: 3px;
+  color: var(--proof); background: color-mix(in srgb, var(--proof) 8%, transparent);
+  font: 500 13px/1 var(--font-cato-body), sans-serif; text-decoration: none; white-space: nowrap;
+  animation: linkIn .25s var(--ease) both;
+}
+.drawLink:hover, .drawLink:focus-visible { background: color-mix(in srgb, var(--proof) 16%, transparent); border-color: var(--proof); }
+.drawLink:focus-visible { outline: 2px solid var(--proof); outline-offset: 2px; }
+@keyframes linkIn { from { opacity: 0; transform: translateX(-4px); } }
+
+/* ---- Result plates ------------------------------------------------------ */
+.outcomeDock {
+  inset: 0 !important; right: auto; bottom: auto; max-width: none !important; display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 16px 13%; text-align: left !important;
+}
+.plate.plate {
+  position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 18px;
+  box-sizing: border-box; max-width: 100%;
+  border: 1px solid #FEA91188; border-radius: 3px; white-space: normal;
+  background: linear-gradient(#1d1712f2, #0d0b09f5); color: var(--cream);
+  box-shadow: inset 0 1px #ffedcd1c, 0 0 0 1px #000, 0 0 44px #fea91138, 0 14px 30px #000a;
+  animation: plateLife 2.8s var(--ease-enter) both;
+}
+.plate[data-kind="win"] { min-width: min(330px, 86%); }
+.plate[data-rare="true"] { border-color: #ED2939; box-shadow: inset 0 1px #ffedcd1c, 0 0 0 1px #000, 0 0 60px #ed293955, 0 0 120px #fea91130, 0 14px 30px #000a; }
+.plate[data-kind="miss"] {
+  padding: 10px 14px; border-color: #ffedcd2e;
+  box-shadow: inset 0 1px #ffedcd12, 0 0 0 1px #000, 0 12px 26px #0009;
+}
+.plate[data-kind="error"] { padding: 10px 16px; border-color: #ED293999; color: #ffb3b8; font: 700 14px/1.3 var(--font-cato-popup), sans-serif; }
+.cat {
+  flex: 0 0 auto; width: 72px; height: 88px; margin: 0; object-fit: contain;
+  filter: drop-shadow(0 6px 10px #0009); transform-origin: 50% 90%;
+  animation: catPop .55s .12s var(--ease-enter) both;
+}
+.plate[data-kind="miss"] .cat { width: 62px; height: 62px; animation-name: catSettle; animation-duration: .5s; }
+.plateText { display: grid; gap: 3px; min-width: 0; padding-bottom: 2px; }
+.plateTitle { color: var(--amber); font: 400 12px/1.4 var(--pixel) !important; letter-spacing: .14em !important; text-shadow: 0 0 12px #fea91188; }
+.plate[data-rare="true"] .plateTitle { color: #ff5c68; text-shadow: 0 0 14px #ed2939aa; }
+.plate[data-kind="miss"] .plateTitle { color: var(--cream); text-shadow: none; }
+.plateNote { color: var(--muted); font: 400 12px/1.3 var(--font-cato-body), sans-serif; }
+.prizeCount { display: block; color: var(--cream); font: 400 clamp(24px, 2.4vw, 34px)/1.15 var(--pixel); letter-spacing: .02em; text-shadow: 0 0 18px #fea91166; font-variant-numeric: tabular-nums; }
+.plate .prizeCount > span { --coin-size: 24px; gap: 9px; }
+@keyframes plateLife { 0% { opacity: 0; transform: translateY(14px); } 14%, 86% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes catPop { 0% { opacity: 0; transform: translateY(6px) scale(.85); } 100% { opacity: 1; transform: none; } }
+@keyframes catSettle { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: none; } }
+
+/* ---- Win effects -------------------------------------------------------- */
+.effects .bloom {
+  background: radial-gradient(ellipse at 50% 70%, #fea9111f, transparent 60%);
+  box-shadow: inset 0 0 90px 14px #fea9118c, inset 0 0 0 2px #fea911b3;
+}
+.effects[data-rare="true"] .bloom { box-shadow: inset 0 0 120px 22px #fea911a6, inset 0 0 40px 6px #ed293966, inset 0 0 0 2px #ffcf6e; }
+.effects[data-win="false"] .bloom { background: none; box-shadow: inset 0 0 70px 8px #ffedcd14; }
+.effects .bloom { animation-duration: 1.5s; }
+.marquee { position: absolute; inset: 7px; pointer-events: none; animation: marqueeLife 1.5s linear both; }
+.marquee::before, .marquee::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 9px 5px, var(--bulb) 2.8px, transparent 3.8px) 0 0 / 18px 10px repeat-x,
+    radial-gradient(circle at 9px 5px, var(--bulb) 2.8px, transparent 3.8px) 0 100% / 18px 10px repeat-x,
+    radial-gradient(circle at 5px 9px, var(--bulb) 2.8px, transparent 3.8px) 0 0 / 10px 18px repeat-y,
+    radial-gradient(circle at 5px 9px, var(--bulb) 2.8px, transparent 3.8px) 100% 0 / 10px 18px repeat-y;
+  filter: drop-shadow(0 0 4px var(--bulb));
+  animation: bulbs .36s steps(1, end) 4 both;
+}
+/* While the rare-win bulbs run round the stage, the aim hint steps aside instead of sitting under them. */
+.effects[data-rare="true"] ~ :has(> [id="claw-aim-help"]) { opacity: 0; }
+.marquee::before { --bulb: var(--signal); }
+.marquee::after {
+  --bulb: var(--amber);
+  background-position: 9px 0, 9px 100%, 0 9px, 100% 9px;
+  animation-delay: -.18s;
+}
+@keyframes bulbs { 0% { opacity: 1; } 50% { opacity: .1; } }
+@keyframes marqueeLife { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ---- Score flash and the new ticket ------------------------------------- */
+.scoreFlash { animation: scoreFlash 1.2s .2s var(--ease, ease-out) both; }
+@keyframes scoreFlash { 0% { text-shadow: 0 0 0 transparent; } 25% { text-shadow: 0 0 18px #fea911, 0 0 4px #ffedcd; color: #FFEDCD; } 100% { text-shadow: 0 0 10px #fea91155; } }
+.fresh { animation: ticketPrint .75s .45s cubic-bezier(.22,1,.36,1) both; }
+@keyframes ticketPrint {
+  0% { transform: translateY(-120%); background-color: #FEA911; }
+  55% { transform: none; background-color: #FEA911; }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fairDraw, .drawLink { transition: none; animation: none; }
+  .fairDraw .drawLamp::after { animation: none !important; opacity: 0; }
+  .plate.plate { animation-name: plateStill; animation-timing-function: linear; }
+  .cat, .plate[data-kind="miss"] .cat { animation: none; }
+  .marquee, .marquee::before, .marquee::after { animation: none; }
+  .marquee::after { opacity: .5; }
+  .scoreFlash, .fresh { animation: none; }
+}
+@keyframes plateStill { 0%, 100% { opacity: 0; } 8%, 90% { opacity: 1; } }
+
+/* The wallet address keeps its case inside the uppercase control labels. */
+.address { text-transform: none; letter-spacing: .02em; }
+
+@media (max-width: 759px) {
+  .fairDraw { grid-column: 1 / -1; margin: 0; min-height: 48px; padding: 5px 6px 5px 10px; gap: 2px 10px; }
+  .drawText strong { font-size: 9px; }
+  .drawText > span { font-size: 12px; line-height: 1.35; }
+  .drawLink { font-size: 12px; padding: 0 9px; }
+  .outcomeDock { padding-bottom: 16%; }
+  .plate[data-kind="win"] { min-width: 0; }
+  .cat { width: 56px; height: 68px; }
+  .plate[data-kind="miss"] .cat { width: 48px; height: 48px; }
+  .prizeCount { font-size: 22px; }
+  .plate .prizeCount > span { --coin-size: 18px; }
+}
+
+/* Chunkier prize pixels that burst from the result plate, not the middle of the glass. */
+.effects > i {
+  top: 70%; width: 8px; height: 8px;
+  box-shadow: 8px 0 var(--pixel), 0 8px var(--pixel), 8px 8px var(--pixel), 0 0 12px var(--pixel);
+}
+.effects[data-rare="true"] > i { width: 10px; height: 10px; box-shadow: 10px 0 var(--pixel), 0 10px var(--pixel), 10px 10px var(--pixel), 0 0 16px var(--pixel); }
+@media (max-width: 759px) { .effects > i { top: 58%; } }
+
+/* Narrow phones: the view switch becomes an icon so it clears the cabinet's marquee; its name stays for screen readers. */
+@media (max-width: 479px) {
+  .viewLabel { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+}

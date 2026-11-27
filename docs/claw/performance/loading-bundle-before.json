@@ -1,0 +1,63 @@
+{
+  "environment": "Deployed initial-script content sizes with local gzip estimates, not browser load time or actual wire transfer.",
+  "deployment": "dpl_2ARt5thWu3E8db4AtFzgFzjQAgCD",
+  "chunks": [
+    {
+      "path": "/_next/static/immutable/chunks/1f-2ig_9a3o09.js",
+      "bytes": 31290,
+      "gzipBytes": 8459
+    },
+    {
+      "path": "/_next/static/immutable/chunks/0unqz69qj2v0k.js",
+      "bytes": 230058,
+      "gzipBytes": 72121
+    },
+    {
+      "path": "/_next/static/immutable/chunks/0d2x1prwgr0dr.js",
+      "bytes": 165614,
+      "gzipBytes": 45490
+    },
+    {
+      "path": "/_next/static/immutable/chunks/turbopack-1cvbnb3nlabgn.js",
+      "bytes": 10030,
+      "gzipBytes": 3940
+    },
+    {
+      "path": "/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+      "bytes": 13822,
+      "gzipBytes": 3514
+    },
+    {
+      "path": "/_next/static/immutable/chunks/2clrike6r81io.js",
+      "bytes": 4364,
+      "gzipBytes": 1866
+    },
+    {
+      "path": "/_next/static/immutable/chunks/1fis7t5g8laec.js",
+      "bytes": 585,
+      "gzipBytes": 388
+    },
+    {
+      "path": "/_next/static/immutable/chunks/0esow6w02do0v.js",
+      "bytes": 336442,
+      "gzipBytes": 93341
+    },
+    {
+      "path": "/_next/static/immutable/chunks/1u25azuj9i_gw.js",
+      "bytes": 507547,
+      "gzipBytes": 136322
+    },
+    {
+      "path": "/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+      "bytes": 112594,
+      "gzipBytes": 39627
+    },
+    {
+      "path": "/_next/static/immutable/chunks/3douyljdx_-l2.js",
+      "bytes": 5584,
+      "gzipBytes": 2035
+    }
+  ],
+  "bytes": 1417930,
+  "gzipBytes": 407103
+}

@@ -1,0 +1,9 @@
+{
+  "wallet": "A1anE9000000000000000000000000000000000ssu9",
+  "balance": 302513,
+  "catoTxCount": 19,
+  "firstCatoTx": "2023-01-15T00:00:00Z",
+  "lastCatoTx": "2025-04-10T00:00:00Z",
+  "acquisitionType": "bought",
+  "note": "Known invariants for the design-doc test wallet (design §11). Per-trade amounts are synthetic in tests; the validated facts are CATO tx count, the first/last CATO activity window, total balance, and that with no sells the untouched-airdrop flag is false. Replace with a real parsed-tx capture once the Helius key runs against the chain."
+}

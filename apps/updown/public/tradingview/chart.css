@@ -1,0 +1,62 @@
+@font-face {
+    font-family: Rubik;
+    src: url('/fonts/Rubik.woff2') format('woff2');
+    font-weight: 300 900;
+    font-display: swap;
+}
+
+html,
+body,
+canvas,
+input,
+button,
+span {
+    font-family: Rubik, system-ui, sans-serif !important;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+/* Disabled instant orders placement control */
+div[data-section-name='tradingConfirmEnabled'] {
+    display: none;
+}
+div[data-section-name='tradingSoundEnabled'] {
+    display: none;
+}
+div[data-section-name='tradingRejectionNotifications'] {
+    display: none;
+}
+div[data-section-name='positionPLDisplay'] {
+    display: none !important;
+}
+div[data-section-name='reverseButton'] {
+    display: none;
+}
+div[data-section-name='appearanceVisibilityGroup'] {
+    display: none;
+}
+div[data-section-name='tradingPositions'] {
+    display: none;
+}
+div[data-section-name='tradingOrders'] {
+    display: none;
+}
+div[data-section-name='tradingExecutions'] {
+    display: none;
+}
+div[data-section-name='extendLeftTradingLine'] {
+    display: none;
+}
+/* instant order placement control style*/
+.loading-indicator {
+    font-family: Trebuchet MS, roboto, ubuntu, sans-serif;
+}
+.wrapper-3X2QgaDd {
+    flex-direction: row-reverse;
+}
+.calculator-3AwNSLGC .calculator__input-3AwNSLGC {
+    display: flex !important;
+}
+[data-name="legend-source-exchange"] {
+    display: none !important;
+}

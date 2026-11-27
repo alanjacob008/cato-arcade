@@ -1,0 +1,43 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+coverage/
+.DS_Store
+.vercel/
+.next/
+next-env.d.ts
+*.log
+# Up Down game bundle, built into the site by apps/web/scripts/build-updown.mjs
+apps/web/public/updown/
+
+# Claw devnet private state and generated build artifacts
+apps/web/onchain/artifacts/
+apps/web/onchain/keys/
+apps/web/onchain/target/
+apps/web/onchain/.anchor/
+*.keypair.json
+*-keypair.json
+*.sqlite
+*.sqlite-*
+*signing-session*.json
+*.pem
+deploy/claw-backend/artifacts/
+.vercel
+deploy/claw-backend/vercel-stage/
+
+apps/web/onchain/artifacts-sponsorship/
+
+# Local browser-automation screenshots and logs
+.playwright-mcp/
+
+# Security audit working files (findings must never be committed)
+.security-audit/
+
+# Agent worktrees created by Claude Code
+.claude/worktrees/
+
+# Taste-skill scratch (Chrome profiles, gate state)
+.taste-skill/

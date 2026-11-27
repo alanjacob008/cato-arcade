@@ -1,0 +1,297 @@
+/* Site-wide type: Bricolage Grotesque for headings, Rubik for everything else. */
+
+/* The Blitz palette (docs/claw/plans/2026-11-27-blitz-ui-direction.md). Amber is the arcade, teal is
+   the chain (proof only). No violet. */
+:root {
+  --site-header-h: 64px;
+  /* One content edge for the whole site, taken from the staking, swap and wrapped pages
+     (components/staking/staking.module.css, .page): a 1400px box (1640px on big screens) with a
+     4vw gutter, 16px from 1024px down. The header and the home sections sit on the same lines. */
+  --site-max: 1400px;
+  --site-gutter: clamp(24px, 4vw, 64px);
+  --c-night: #0B0A09;
+  --c-site-bg: #121212;
+  --c-deck: #1A1714;
+  --c-deck-edge: #2B2621;
+  --c-amber: #FEA911;
+  --c-ember: #D3601E;
+  --c-cream: #FFEDCD;
+  --c-espresso: #1C0D00;
+  --c-signal: #ED2939;
+  --c-proof: #4FE3C1;
+  --c-muted: #A8A096;
+  --c-ease: cubic-bezier(.2, .8, .2, 1);
+}
+@media (max-width: 1024px) {
+  :root { --site-gutter: 16px; }
+}
+@media (min-width: 1600px) and (min-height: 940px) {
+  :root { --site-max: 1640px; }
+}
+
+h1,
+h2 {
+  font-family: var(--font-display), var(--font-brand), system-ui, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+/* ---------- Header: dark glass, amber for the current page ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--site-header-h);
+  border-bottom: 1px solid rgb(254 169 17 / .12);
+}
+/* The glass sits on a layer of its own: a backdrop-filter on the header itself would make the header
+   the containing block of everything fixed inside it (the dropdowns' click-away layer). */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: rgb(11 10 9 / .74);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+}
+.site-header__inner {
+  box-sizing: border-box;
+  width: min(var(--site-max), 100%);
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  white-space: nowrap;
+  color: #FFF6E6;
+  text-decoration: none;
+  font-family: var(--font-display), var(--font-brand), sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  transition: color .15s var(--c-ease);
+}
+.site-brand:hover { color: var(--c-cream); }
+
+.site-nav { display: flex; align-items: center; gap: 2px; }
+.site-nav__wide { display: flex; align-items: center; gap: 2px; }
+.site-nav__menu { position: relative; }
+
+.site-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 11px;
+  border-radius: 10px;
+  color: #EDE4D6;
+  text-decoration: none;
+  font: 600 15px/1 var(--font-brand), system-ui, sans-serif;
+  white-space: nowrap;
+  transition: color .12s var(--c-ease), background-color .12s var(--c-ease), transform .12s var(--c-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+/* The drawn underline: a 1px line 4px under the word, drawn left to right. */
+.site-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: 8px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .12s var(--c-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .site-nav__link:hover { color: #FFF6E6; transition-duration: .15s; }
+  .site-nav__link:hover::after { transform: scaleX(1); transform-origin: left center; transition-duration: .15s; }
+}
+.site-nav__link:active { transform: translateY(1px) scale(.985); transition-duration: .09s; }
+.site-nav__link:focus-visible,
+.site-brand:focus-visible,
+.site-nav__item:focus-visible,
+.site-sheet a:focus-visible { outline: 2px solid var(--c-amber); outline-offset: 2px; transition: none; }
+
+/* Current page: amber words over a 2px amber bar. */
+.site-nav__link[aria-current="page"],
+.site-nav__link[data-current="true"] { color: var(--c-amber); }
+.site-nav__link[aria-current="page"]::after,
+.site-nav__link[data-current="true"]::after {
+  height: 2px;
+  bottom: 6px;
+  transform: scaleX(1);
+  background: var(--c-amber);
+  box-shadow: 0 0 10px rgb(254 169 17 / .6);
+}
+
+.site-nav__arcade { color: #FFF6E6; }
+.site-nav__dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--c-amber);
+  box-shadow: 0 0 0 3px rgb(254 169 17 / .16), 0 0 10px rgb(254 169 17 / .9);
+}
+
+.site-nav__button { border: 0; background: transparent; cursor: pointer; font-family: var(--font-brand), system-ui, sans-serif; }
+/* the outlined controls (Socials, Menu, Close) take the same pill as the hero's outlined button */
+.site-nav__outline { border: 1px solid rgb(255 237 205 / .16); border-radius: 999px; padding: 0 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .site-nav__outline:hover { background: rgb(255 237 205 / .06); border-color: rgb(255 237 205 / .28); }
+}
+.site-nav__outline::after { display: none; }
+.site-nav__chev { font-size: 11px; transition: transform .2s var(--c-ease); }
+.site-nav__button[aria-expanded="true"] .site-nav__chev { transform: rotate(180deg); }
+
+.site-nav__away { position: fixed; inset: 0; z-index: 40; }
+.site-nav__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 41;
+  min-width: 200px;
+  padding: 6px;
+  background: rgb(26 23 20 / .96);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--c-deck-edge);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgb(0 0 0 / .55);
+  animation: site-drop .2s var(--c-ease) both;
+}
+.site-nav__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 9px;
+  color: #EDE4D6;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color .12s var(--c-ease), color .12s var(--c-ease);
+}
+.site-nav__item:hover { background: rgb(255 237 205 / .07); color: #FFF6E6; }
+.site-nav__tag {
+  margin-left: auto;
+  padding: 2px 6px;
+  border: 1px solid rgb(254 169 17 / .35);
+  border-radius: 6px;
+  color: var(--c-amber);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.site-nav__icon { width: 18px; text-align: center; color: var(--c-amber); }
+.site-nav__ext { margin-left: auto; color: var(--c-muted); }
+
+.site-nav__toggle { display: none; }
+
+/* The phone menu: a full-screen dialog on <body> (components/Header.tsx). Its bar repeats the header,
+   with Close where Menu was; the links fill the screen under it. */
+.site-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse 80% 40% at 0% var(--site-header-h), rgb(254 169 17 / .08), transparent 70%),
+    var(--c-night);
+  color: #f5f5f5;
+  font-family: var(--font-brand), system-ui, sans-serif;
+  animation: site-fade .2s var(--c-ease) both;
+}
+.site-sheet__bar {
+  flex: none;
+  box-sizing: border-box;
+  height: var(--site-header-h);
+  border-bottom: 1px solid rgb(254 169 17 / .12);
+}
+.site-sheet__body {
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(var(--site-max), 100%);
+  margin-inline: auto;
+  padding: 20px var(--site-gutter) calc(28px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.site-sheet__nav { display: flex; flex-direction: column; }
+.site-sheet__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--c-deck-edge);
+  color: #FFF6E6;
+  text-decoration: none;
+  font: 700 28px/1.1 var(--font-display), var(--font-brand), sans-serif;
+  letter-spacing: -0.03em;
+}
+.site-sheet__link[aria-current="page"] { color: var(--c-amber); }
+.site-sheet__link--small { min-height: 48px; font: 600 18px/1.2 var(--font-brand), sans-serif; letter-spacing: 0; color: #EDE4D6; }
+.site-sheet__link .site-nav__tag { margin-left: 8px; }
+.site-sheet__socials { display: flex; flex-wrap: wrap; gap: 8px; }
+.site-sheet__social {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgb(255 237 205 / .16);
+  border-radius: 999px;
+  color: #EDE4D6;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color .12s var(--c-ease), border-color .12s var(--c-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .site-sheet__link:hover { color: var(--c-cream); }
+  .site-sheet__social:hover { background: rgb(255 237 205 / .06); border-color: rgb(255 237 205 / .28); }
+}
+.site-sheet button:focus-visible { outline: 2px solid var(--c-amber); outline-offset: 2px; }
+
+@media (max-width: 899px) {
+  .site-nav__wide { display: none; }
+  .site-nav__toggle { display: inline-flex; }
+  .site-nav { gap: 6px; }
+}
+/* Header wordmark: a little smaller on phones so it stays on one line. */
+@media (max-width: 520px) {
+  .site-brand { font-size: 16px; }
+  .site-nav__link { padding: 0 10px; }
+}
+
+@media (max-width: 380px) {
+  .site-brand { font-size: 14px; }
+  .site-nav { gap: 2px; }
+  .site-nav__link { padding: 0 8px; font-size: 14px; }
+}
+
+@keyframes site-drop { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes site-fade { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav__link, .site-nav__link::after, .site-nav__chev { transition-property: color, background-color, opacity; }
+  .site-nav__link:active { transform: none; }
+  .site-nav__panel, .site-sheet { animation-duration: .01s; }
+}
